@@ -5,4 +5,5 @@ Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Jane
 
 - Testar métodos para visuzalização de gráficos, principalmente com a biblioteca matplotlib
 
-> ## Método Diamond Difference
+<summary>## Método Diamond Difference</summary>
+
