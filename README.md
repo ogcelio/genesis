@@ -9,76 +9,153 @@ Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Jane
   <summary>Método</summary>
   
   ```py
-  import numpy as np
+  import os
+import sys
+from decimal import Decimal, getcontext
 
-from quadratura_backend import quadratura
+# DECIMAL UTILIZADO PARA QUE SEJAM EVITADOS ERROS DEVIDO A UTILIZAÇÃO DO
+# TYPE FLOAT
+
+import numpy as np
+
+# Tornando a quadratura possível de ser importada
+path_quadratura = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(path_quadratura)
+
+from quadratura.quadratura_backend import quadratura
 
 
-def diamond_difference(N, NN, Z, esp_Z, sigmaT, sigmaS0, Qj, precisao, cce, ccd):
+def diamond_difference(
+    sigmaT,
+    sigmaS0,
+    sigmaS1,
+    sigmaS2,
+    Qj,
+    NiSigmaF,
+    N,
+    cce,
+    ccd,
+    precisao,
+    NN,
+    regioes,
+    n_regioes,
+    esp_R,
+):
+    getcontext().prec = 50
     iteracao = 0  # Iniciando as iterações
+    N = int(N)
+    n_regioes = int(n_regioes)
     mi, w = quadratura(N)  # Mis e Omegas da quadratura
-    pt = NN + 1  # Número de pontos totais
-    hj = esp_Z / NN  # Espessura do nodo
-    Qj = Qj / NN
-    ###ETAPA estimativas iniciais:  CORRETO
+    pt = int(sum(NN) + 1)  # Número de pontos totais
+    NNT = int(sum(NN))  # Número de nodos totais
+
+    teste_0 = False
+    for i in range(len(Qj)):
+        if Qj[i] != 0.0:
+            teste_0 = True  # Teste para saber se todas as fontes são 0
+            break
+
+    hj = [0 for _ in range(n_regioes)]
+    for regiao in range(n_regioes):
+        hj[regiao] = esp_R[regiao] / NN[regiao]  # Espessura do nodo
+
+    ###ETAPA estimativas iniciais:
     psiX = [[0 for _ in range(N)] for _ in range(pt)]  # criando lista com psis iniciais
     for i in range(N // 2):
         psiX[0][i] = cce
-        psiX[NN][i + 2] = ccd
+        psiX[NNT][N // 2 + i] = ccd
 
     while True:
-        iteracao += 1  #  Contagem de Iterações
-
-        ###ETAPA CÁLCULO DOS PSIS MÉDIOS    CORRETO
+        iteracao += 1
+        ###ETAPA CÁLCULO DOS PSIS MÉDIOS
         psiM = []
-        for j in range(NN):
+        for j in range(NNT):
             psiM_aux = []
             for m in range(N):
-                psiM_aux.append((1 / 2) * (psiX[j + 1][m] + psiX[j][m]))
+                psiM_aux.append(Decimal("0.5") * (psiX[j + 1][m] + psiX[j][m]))
             psiM.append(psiM_aux)
 
-        ###ETAPA CÁLCULO DO Ssj    CORRETO
+        ###ETAPA CÁLCULO DO Ssj
+        regiao = regioes[0] - 1
+        nodo = 0
         Ssj = []
-        for j in range(NN):
+        i = 0
+        for j in range(NNT):
             soma = 0
+            if nodo == NN[i]:
+                i += 1
+                regiao = regioes[i] - 1
+                nodo = 0
+
             for m in range(N):
                 soma += w[m] * psiM[j][m]
-            Ssj.append((sigmaS0 / 2) * soma)
+            Ssj.append((sigmaS0[regiao] / 2) * soma)
+            nodo += 1
 
-        ###ETAPA CÁLCULO DO FI INICIAL    CORRETO
+        ###ETAPA CÁLCULO DO FI INICIAL
         fi_inicial = []
         for x in range(pt):
             soma_fi = 0
             for m in range(N):
                 soma_fi += w[m] * psiX[x][m]
-            fi_inicial.append((1 / 2) * soma_fi)
+            fi_inicial.append(Decimal("0.5") * soma_fi)
 
-        ###ETAPA IDA    CORRETO
+        if ccd == 0.0 and cce == 0.0 and teste_0 == False:
+            taxa_absorcao = [0 for _ in range(n_regioes)]
+            taxa_fuga = [0, 0]
+            return (
+                fi_inicial,
+                psiX,
+                iteracao,
+                taxa_absorcao,
+                taxa_fuga,
+            )  # Caso fontes e condições de contorno sejam nulas, o código retorna os fluxos completamente preenchidos de zeros
+
+        ###ETAPA IDA
+        regiao = regioes[0] - 1
+        nodo = 0
+        i = 0
         for j in range(1, pt):
+            if nodo == NN[i]:
+                i += 1
+                regiao = regioes[i] - 1
+                nodo = 0
             for m in range(N // 2):
-                psiIDA_novo = (
-                    (((mi[m] / hj) - (sigmaT / 2)) * psiX[j - 1][m]) + Ssj[j - 1] + Qj
-                ) / ((mi[m] / hj) + (sigmaT / 2))
-                psiX[j][m] = psiIDA_novo
+                psiX[j][m] = (
+                    (((mi[m] / hj[i]) - (sigmaT[regiao] / 2)) * psiX[j - 1][m])
+                    + Ssj[j - 1]
+                    + Qj[regiao]
+                ) / ((mi[m] / hj[i]) + (sigmaT[regiao] / 2))
+            nodo += 1
 
-        ###ETAPA VOLTA    CORRETO
-        for j in range(NN - 1, -1, -1):
+        ###ETAPA VOLTA
+        ultima_regiao = len(regioes) - 1
+        regiao = regioes[ultima_regiao] - 1
+        nodo = 0
+        i = ultima_regiao
+        for j in range(NNT - 1, -1, -1):
+            if nodo == NN[i]:
+                i -= 1
+                regiao = regioes[i] - 1
+                nodo = 0
             for m in range((N // 2), N):
-                psiVOLTA_novo = (
-                    (((abs(mi[m]) / hj) - (sigmaT / 2)) * psiX[j + 1][m]) + Ssj[j] + Qj
-                ) / ((abs(mi[m]) / hj) + (sigmaT / 2))
-                psiX[j][m] = psiVOLTA_novo
+                psiX[j][m] = (
+                    (((abs(mi[m]) / hj[i]) - (sigmaT[regiao] / 2)) * psiX[j + 1][m])
+                    + Ssj[j]
+                    + Qj[regiao]
+                ) / ((abs(mi[m]) / hj[i]) + (sigmaT[regiao] / 2))
+            nodo += 1
 
-        ###ETAPA CÁLCULO DO FI FINAL    CORRETO
+        ###ETAPA CÁLCULO DO FI FINAL
         fi_final = []
         for x in range(pt):
             soma_fi = 0
             for m in range(N):
                 soma_fi += w[m] * psiX[x][m]
-            fi_final.append((1 / 2) * soma_fi)
+            fi_final.append(Decimal("0.5") * soma_fi)
 
         if iteracao > 1:
-            ###ETAPA CÁLCULO DO DR   CORRETO
+            ###ETAPA CÁLCULO DO DR
 
             # Transformando em arrays numpy para realizar a subtração
             fi_inicial = np.array(fi_inicial)
@@ -100,13 +177,60 @@ def diamond_difference(N, NN, Z, esp_Z, sigmaT, sigmaS0, Qj, precisao, cce, ccd)
 
     # Arredondando fi_final
     fi_final = fi_final.tolist()
-    fi_final_formatado = [round(num, 4) for num in fi_final]
+    fi_final_formatado = [round(float(fi), 4) for fi in fi_final]
 
-    # Como psiX é uma matriz, deve ser arredondado com auxílio da Numpy
-    psiX_formatado = np.array(psiX).round(4)
-    psiX_formatado = psiX_formatado.tolist()
+    # Arredondando psiX
+    psiX_formatado = [[float(f"{fluxo:.4f}") for fluxo in linha] for linha in psiX]
 
-    return fi_final_formatado, psiX_formatado, iteracao
+    # TAXA DE ABSORÇÃO
+    fi_medio = []
+    sigmaA = []
+    regiao = regioes[0] - 1
+    soma = 0
+    i = 0
+    nodo = 0
+    for j in range(NNT):
+        if nodo == NN[i]:
+            i += 1
+            regiao = regioes[i] - 1
+            nodo = 0
+        for m in range(N):
+            soma += w[m] * psiM[j][m]
+        fi_medio.append(Decimal("0.5") * soma)
+        soma = 0
+        nodo += 1
+
+    # Gerando Sigma A
+    for regiao in regioes:
+        sigmaA.append(sigmaT[regiao - 1] - sigmaS0[regiao - 1])
+
+    taxa_absorcao = []
+    soma = 0
+    nodo = 1
+    i = 0
+    for j in range(NNT):
+        soma += sigmaA[i] * fi_medio[j]
+        if nodo == NN[i]:
+            i += 1
+            taxa_absorcao.append(soma)
+            soma = 0
+            nodo = 0
+        nodo += 1
+
+    # FUGA EM 0
+    taxa_fuga = []
+    soma = 0
+    for m in range(N // 2, N):
+        soma += abs(mi[m] * w[m] * psiX[0][m])
+    taxa_fuga.append(soma)
+
+    # FUGA NO MÁXIMO DA ÚLTIMA REGIÃO
+    soma = 0
+    for m in range(N // 2):
+        soma += abs(mi[m] * w[m] * psiX[len(psiX) - 1][m])
+    taxa_fuga.append(soma)
+
+    return fi_final_formatado, psiX_formatado, iteracao, taxa_absorcao, taxa_fuga
   ```
 
 </details>
