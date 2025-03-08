@@ -1,4 +1,4 @@
-# Simulador_Nuclear
+# Simulador Nuclear
 Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Janeiro
 
 ## LEMBRAR:
