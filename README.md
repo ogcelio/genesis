@@ -3,6 +3,7 @@ Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Jane
 
 ## LEMBRAR:
 - CASO VÁ RODAR O SIMULADOR EM UM COMPUTADOR PESSOAL:
+  
   1: Por segurança, crie um ambiente virtual rodando o seguinte comando no terminal:
   ```md
   python -m venv venv
