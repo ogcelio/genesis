@@ -2,8 +2,30 @@
 Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Janeiro
 
 ## LEMBRAR:
-- Fazer a proteção "anti-erros" no código do simulador
+- CASO VÁ RODAR O SIMULADOR EM UM COMPUTADOR PESSOAL:
+  1: Por segurança, crie um ambiente virtual rodando o seguinte comando no terminal:
+  ```md
+  python -m venv venv
+  ```
+  Obs.: O segundo venv representa o nome da pasta do ambiente virtual que, por convenção, é venv.
 
+  2: IMPORTANTE: Habilite o ambiente virtual rodando o seguinte comando no terminal (Windows):
+  ```md
+  .\venv\Scripts\activate
+  ```
+
+  3: Instale todos os requerimentos para que o simulador seja executado com o seguinte comando:
+  ```md
+  pip install -r .\requirements.txt
+  ```
+
+  4: Certifique-se que o código está sendo interpretado com o python correto, o que pode ser conferido na parte de baixo do VS Code
+  Exemplo: Python 3.13.1 ('venv':venv)
+
+  5: Pronto, você pode rodar normalmente o simulador. Toda alteração ou instalação feita com o ambiente virtual ativado não afeta o computador de forma global. Para desativar, basta digitar no terminal:
+  ```md
+  deactivate
+  ```
 ## Método Diamond Difference
 <details>
   <summary>Método</summary>
@@ -101,11 +123,16 @@ def diamond_difference(
             fi_inicial.append(Decimal("0.5") * soma_fi)
 
         if ccd == 0.0 and cce == 0.0 and teste_0 == False:
+            # Arredondando fi_final
+            fi_inicial_formatado = [float(fi) for fi in fi_inicial]
+
+            # Arredondando psiX
+            psiX_formatado = [[float(f"{fluxo}") for fluxo in linha] for linha in psiX]
             taxa_absorcao = [0 for _ in range(n_regioes)]
             taxa_fuga = [0, 0]
             return (
-                fi_inicial,
-                psiX,
+                fi_inicial_formatado,
+                psiX_formatado,
                 iteracao,
                 taxa_absorcao,
                 taxa_fuga,
