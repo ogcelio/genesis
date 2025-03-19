@@ -279,20 +279,6 @@ sys.path.append(path_quadratura)
 
 from quadratura.quadratura_backend import quadratura
 
-
-sigmaT = [1, 1, 1, 1, 1, 1, 0.2500, 0.3333, 0.2777, 0.3333]
-sigmaS0 = [
-    0.9500,
-    0.9300,
-    0.9800,
-    0.9200,
-    0.9100,
-    0.8500,
-    0.0500,
-    0.2333,
-    0.1777,
-    0.2333,
-]
 getcontext().prec = 50
 
 
@@ -312,87 +298,72 @@ def med(
     n_regioes,
     esp_R,
 ):
-    matrizes_A = []
-    matrizes_B = []
-    solucoes = []
-    NNT = int(sum(NN))
-    pt = NNT + 1
+    N = int(N)  # Ordem da Quadratura
+    n_regioes = int(n_regioes)  # Quantidade de regiões
+    mi, w = quadratura(N)  # Mis e Omegas da quadratura
+    pt = int(sum(NN) + 1)  # Número de pontos totais
+    NNT = int(sum(NN))  # Número de nodos totais
+
+    psiX = [[0 for _ in range(N)] for _ in range(pt)]  # Criando lista com psis iniciais
+    for i in range(N // 2):
+        psiX[0][i] = cce
+        psiX[NNT][N // 2 + i] = ccd
+
+    hj = [0 for _ in range(n_regioes)]
+    for regiao in range(n_regioes):
+        hj[regiao] = esp_R[regiao] / NN[regiao]  # Espessura do nodo
+
     C0j = []
     for i in range(len(sigmaT)):
         C0j.append(sigmaS0[i] / sigmaT[i])
-    mi, w = quadratura(N)
 
-    regiao = regioes[0] - 1
-    nodo = 0
-    k = 0
-    for nodo_nodo in range(NNT):
-        A_chapeu = [[0 for m in range(N)] for m in range(N)]
+    matrizes_eig = []
+    autovalores = []
+    autovetores = []
+    matrizes_homogenea = []
+    matrizes_alfa = []
+    matrizes_particular = []
+    solucoes_particulares = []
+    for n, regiao in enumerate(regioes):
+        # for nodo in range(NN[n]): # Para o método com mais de um nodo por região
+
+        # Matriz para coletar autovalores (Ni) e autovetores(am(Ni))
+        matriz_A = [[0 for _ in range(N)] for _ in range(N)]
         for i in range(N):
             for j in range(N):
                 if i == j:
-                    A_chapeu[i][j] = (1 / mi[i]) - ((C0j[regiao] * w[j]) / (2 * mi[i]))
+                    matriz_A[i][j] = float(
+                        (1 / mi[i]) - ((C0j[regiao - 1] * w[j]) / (2 * mi[i]))
+                    )
                 else:
-                    A_chapeu[i][j] = -((C0j[regiao] * w[j]) / (2 * mi[i]))
+                    matriz_A[i][j] = float(-((C0j[regiao - 1] * w[j]) / (2 * mi[i])))
+        matrizes_eig.append(matriz_A)
 
-        for i in range(N):
-            for j in range(N):
-                A_chapeu[i][j] = float(A_chapeu[i][j])
-
-        matrizes_A.append(A_chapeu)
-        autovalores, autovetores = np.linalg.eig(A_chapeu)
-        autovetores = np.transpose(autovetores)
-
-        B_chapeu = [[0 for m in range(N)] for m in range(N)]
+        # Matriz para encontrar os fluxos da parte particular da solução
+        matriz_B = [[0 for _ in range(N)] for _ in range(N)]
         for i in range(N):
             for j in range(N):
                 if i == j:
-                    B_chapeu[i][j] = sigmaT[regiao] - ((sigmaS0[regiao] * w[j]) / 2)
+                    matriz_B[i][j] = float(
+                        sigmaT[regiao - 1] - ((sigmaS0[regiao - 1] * w[j]) / 2)
+                    )
                 else:
-                    B_chapeu[i][j] = -(sigmaS0[regiao] * w[j]) / 2
+                    matriz_B[i][j] = float(-((sigmaS0[regiao - 1] * w[j]) / 2))
 
-        for i in range(N):
-            for j in range(N):
-                B_chapeu[i][j] = float(B_chapeu[i][j])
+        # Encontrando matrizes inversas da solução particular
+        matriz_inversa = np.linalg.inv(matriz_B)
+        matrizes_particular.append(matriz_inversa)
+        del matriz_inversa  # Para não dar erro, caso vc do futuro tenha uma solução melhor...
 
-        matrizes_B.append(B_chapeu)
-        B_chapeu_inversa = np.linalg.inv(B_chapeu)
+    # Encontrando autovalores e autovetores
+    for matriz in matrizes_eig:
+        autovalor, autovetor = np.linalg.eig(matriz)
+        autovalores.append(autovalor.tolist())
+        autovetores.append(autovetor.tolist())
 
-        fonte = [Qj[regiao] for _ in range(N)]
-        solucao_particular = B_chapeu_inversa @ fonte
-        solucoes.append(solucao_particular.tolist())
-
-        if nodo == NN[k]:
-            k += 1
-            regiao = regioes[k] - 1
-            nodo = 0
-        nodo += 1
-
-    return autovalores, autovetores, solucoes
-
-
-N = 4
-n_regioes = 1
-sigmaT = [Decimal(f"{sigma}") for sigma in sigmaT]
-sigmaS0 = [Decimal(f"{sigma}") for sigma in sigmaS0]
-Qj = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-NN = [1]
-ni, am, solucoes = med(
-    sigmaT,
-    sigmaS0,
-    [],
-    [],
-    Qj,
-    [],
-    N,
-    1,
-    0,
-    10e-6,
-    NN,
-    [1],
-    n_regioes,
-    [5],
-)
-
-print(ni, "\n\n", am, "\n\n", solucoes)
+    # Encontrando soluções particulares
+    fonte = [float(Qj[regiao - 1]) for _ in range(N)]
+    for matriz in matrizes_particular:
+        solucoes_particulares.append((matriz @ fonte).tolist())
   ```
 </details>
