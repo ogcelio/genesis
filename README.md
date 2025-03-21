@@ -2,6 +2,7 @@
 Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Janeiro
 
 ## LEMBRAR:
+- Trocar precisão por "Qtd. de Casas Decimais"
 - CASO VÁ RODAR O SIMULADOR EM UM COMPUTADOR PESSOAL:
   
   1: Por segurança, crie um ambiente virtual rodando o seguinte comando no terminal:
