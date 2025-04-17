@@ -214,34 +214,29 @@ def diamond_difference(
     # TAXA DE ABSORÇÃO
     fi_medio = []
     sigmaA = []
-    regiao = regioes[0] - 1
     soma = 0
-    i = 0
-    nodo = 0
     for j in range(NNT):
-        if nodo == NN[i]:
-            i += 1
-            regiao = regioes[i] - 1
-            nodo = 0
         for m in range(N):
             soma += w[m] * psiM[j][m]
         fi_medio.append(Decimal("0.5") * soma)
         soma = 0
-        nodo += 1
 
     # Gerando Sigma A
-    for regiao in regioes:
-        sigmaA.append(sigmaT[regiao - 1] - sigmaS0[regiao - 1])
+    for regiao in range(len(sigmaT)):
+        sigmaA.append(sigmaT[regiao] - sigmaS0[regiao])
 
+    regiao = regioes[0] - 1
     taxa_absorcao = []
     soma = 0
     nodo = 1
     i = 0
     for j in range(NNT):
-        soma += sigmaA[i] * fi_medio[j]
+        soma += sigmaA[regiao] * fi_medio[j] * hj[regiao]
         if nodo == NN[i]:
             i += 1
-            taxa_absorcao.append(soma)
+            if i < len(regioes):
+                regiao = regioes[i] - 1
+            taxa_absorcao.append(soma / esp_R[regiao])
             soma = 0
             nodo = 0
         nodo += 1
