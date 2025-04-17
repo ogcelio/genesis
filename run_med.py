@@ -2,7 +2,8 @@ import json
 import os
 import sys
 from decimal import Decimal, getcontext
-from metodos.MED.med_revisado import med
+from metodos.MED.metodo_med import med
+from metodos.Diamond_Difference.metodo_dd import diamond_difference
 
 getcontext().prec = 50
 
@@ -27,7 +28,27 @@ for i in range(len(sigmaT)):
     Qj[i] = Decimal(Qj[i])
     NiSigmaF[i] = Decimal(NiSigmaF[i])
 
-med(
+fi_final_formatado, psiX_formatado, iteracao, taxa_absorcao, taxa_fuga = (
+    diamond_difference(
+        sigmaT,
+        sigmaS0,
+        sigmaS1,
+        sigmaS2,
+        Qj,
+        NiSigmaF,
+        N=Decimal("4"),
+        cce=Decimal("1"),
+        ccd=Decimal("0"),
+        precisao=10e-6,
+        NN=[Decimal("10"), Decimal("10"), Decimal("10"), Decimal("10")],
+        regioes=[1, 2, 3, 4],
+        n_regioes=Decimal("4"),
+        esp_R=[Decimal("5"), Decimal("5"), Decimal("5"), Decimal("5")],
+    )
+)
+print(taxa_absorcao)
+print("-" * 50)
+fi_final_formatado, psiX_formatado, iteracao, taxa_absorcao, taxa_fuga = med(
     sigmaT,
     sigmaS0,
     sigmaS1,
@@ -38,9 +59,10 @@ med(
     cce=Decimal("1"),
     ccd=Decimal("0"),
     precisao=10e-6,
-    NN=[Decimal("1")],
-    regioes=[1],
-    n_regioes=Decimal("1"),
-    esp_R=[Decimal("5")],
+    NN=[Decimal("1"), Decimal("1"), Decimal("1"), Decimal("1")],
+    regioes=[1, 2, 3, 4],
+    n_regioes=Decimal("4"),
+    esp_R=[Decimal("5"), Decimal("5"), Decimal("5"), Decimal("5")],
 )
+print(taxa_absorcao)
 # print(ni, "\n\n", am, "\n\n", solucoes)
