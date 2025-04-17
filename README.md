@@ -264,14 +264,14 @@ def diamond_difference(
 
 </details>
 
-## Método MED (Prévia)
+## Método MED
 <details>
   <summary>Método</summary>
   
   ```py
 import os
 import sys
-
+import copy
 import numpy as np
 from decimal import Decimal, getcontext
 
@@ -299,11 +299,18 @@ def med(
     n_regioes,
     esp_R,
 ):
+    ###ETAPA INICIALIZANDO VARIÁVEIS
     N = int(N)  # Ordem da Quadratura
     n_regioes = int(n_regioes)  # Quantidade de regiões
     mi, w = quadratura(N)  # Mis e Omegas da quadratura
     pt = int(sum(NN) + 1)  # Número de pontos totais
     NNT = int(sum(NN))  # Número de nodos totais
+
+    teste_0 = False
+    for i in range(len(Qj)):
+        if Qj[i] != 0.0:
+            teste_0 = True  # Teste para saber se todas as fontes são 0
+            break
 
     psiX = [[0 for _ in range(N)] for _ in range(pt)]  # Criando lista com psis iniciais
     for i in range(N // 2):
@@ -318,53 +325,260 @@ def med(
     for i in range(len(sigmaT)):
         C0j.append(sigmaS0[i] / sigmaT[i])
 
-    matrizes_eig = []
-    autovalores = []
-    autovetores = []
-    matrizes_homogenea = []
-    matrizes_alfa = []
-    matrizes_particular = []
-    solucoes_particulares = []
-    for n, regiao in enumerate(regioes):
-        # for nodo in range(NN[n]): # Para o método com mais de um nodo por região
+    iteracao = 0
+    while True:
+        psiM = [[0 for _ in range(N)] for _ in range(NNT)]
+        iteracao += 1
+        ###ETAPA CÁLCULO DO FI INICIAL
+        fi_inicial = []
+        for x in range(pt):
+            soma_fi = 0
+            for m in range(N):
+                soma_fi += w[m] * Decimal(f"{psiX[x][m]}")
+            fi_inicial.append(Decimal("0.5") * soma_fi)
 
-        # Matriz para coletar autovalores (Ni) e autovetores(am(Ni))
-        matriz_A = [[0 for _ in range(N)] for _ in range(N)]
-        for i in range(N):
-            for j in range(N):
-                if i == j:
-                    matriz_A[i][j] = float(
-                        (1 / mi[i]) - ((C0j[regiao - 1] * w[j]) / (2 * mi[i]))
-                    )
-                else:
-                    matriz_A[i][j] = float(-((C0j[regiao - 1] * w[j]) / (2 * mi[i])))
-        matrizes_eig.append(matriz_A)
+        if ccd == 0.0 and cce == 0.0 and teste_0 == False:
+            # Arredondando fi_final
+            fi_inicial_formatado = [float(fi) for fi in fi_inicial]
 
-        # Matriz para encontrar os fluxos da parte particular da solução
-        matriz_B = [[0 for _ in range(N)] for _ in range(N)]
-        for i in range(N):
-            for j in range(N):
-                if i == j:
-                    matriz_B[i][j] = float(
-                        sigmaT[regiao - 1] - ((sigmaS0[regiao - 1] * w[j]) / 2)
-                    )
-                else:
-                    matriz_B[i][j] = float(-((sigmaS0[regiao - 1] * w[j]) / 2))
+            # Arredondando psiX
+            psiX_formatado = [[float(f"{fluxo}") for fluxo in linha] for linha in psiX]
+            taxa_absorcao = [0 for _ in range(n_regioes)]
+            taxa_fuga = [0, 0]
+            return (
+                fi_inicial_formatado,
+                psiX_formatado,
+                iteracao,
+                taxa_absorcao,
+                taxa_fuga,
+            )  # Caso fontes e condições de contorno sejam nulas, o código retorna os fluxos completamente preenchidos de zeros
 
-        # Encontrando matrizes inversas da solução particular
-        matriz_inversa = np.linalg.inv(matriz_B)
-        matrizes_particular.append(matriz_inversa)
-        del matriz_inversa  # Para não dar erro, caso vc do futuro tenha uma solução melhor...
+        # REALIZANDO O MESMO PROCESSO PARA CADA NODO
+        regiao = regioes[0] - 1
+        contador = 0
+        k = 0
+        for nodo in range(NNT):
+            if contador == NN[k]:
+                k += 1
+                regiao = regioes[k] - 1
+                contador = 0
 
-    # Encontrando autovalores e autovetores
-    for matriz in matrizes_eig:
-        autovalor, autovetor = np.linalg.eig(matriz)
-        autovalores.append(autovalor.tolist())
-        autovetores.append(autovetor.tolist())
+            matriz_A = [[0 for _ in range(N)] for _ in range(N)]
+            matriz_P = [[0 for _ in range(N)] for _ in range(N)]
 
-    # Encontrando soluções particulares
-    fonte = [float(Qj[regiao - 1]) for _ in range(N)]
-    for matriz in matrizes_particular:
-        solucoes_particulares.append((matriz @ fonte).tolist())
+            ###ETAPA CÁLCULO DA MATRIZ DE AUTOVALORES E AUTOVETORES
+            for i in range(N):
+                for j in range(N):
+                    if i == j:
+                        matriz_A[i][j] = float(
+                            (1 / mi[i]) - ((C0j[regiao] * w[j]) / (2 * mi[i]))
+                        )
+                    else:
+                        matriz_A[i][j] = float(-((C0j[regiao] * w[j]) / (2 * mi[i])))
+
+            # ENCONTRANDO AUTOVALORES E AUTOVETORES
+            autovalor_lambda, autovetor = np.linalg.eig(matriz_A)
+            autovalores = autovalor_lambda.tolist()
+            autovetores = autovetor.tolist()
+
+            # TRANSFORMANDO LAMBDA EM NI
+            for i, autovalor in enumerate(autovalores):
+                autovalores[i] = 1 / autovalor
+
+            ###ETAPA CÁLCULO DA MATRIZ DA SOLUÇÃO PARTICULAR
+            for i in range(N):
+                for j in range(N):
+                    if i == j:
+                        matriz_P[i][j] = float(
+                            sigmaT[regiao] - ((sigmaS0[regiao] * w[j]) / 2)
+                        )
+                    else:
+                        matriz_P[i][j] = float(-((sigmaS0[regiao] * w[j]) / 2))
+            matriz_P_inv = np.linalg.inv(matriz_P)
+
+            fonte = [float(Qj[regiao]) for _ in range(N)]
+            solucao_particular = (matriz_P_inv @ fonte).tolist()
+
+            ###ETAPA CÁLCULO DO VETOR SOLUÇÃO PARA OS ALFAS
+            vetor_solucao = [0 for _ in range(N)]
+            for i in range(N // 2):
+                vetor_solucao[i] = float(psiX[nodo][i]) - solucao_particular[i]
+                vetor_solucao[N // 2 + i] = (
+                    float(psiX[nodo + 1][N // 2 + i]) - solucao_particular[N // 2 + i]
+                )
+
+            # CÁLCULO DA MATRIZ GERADORA DOS ALFAS
+            matriz_alfa = [[0 for _ in range(N)] for _ in range(N)]
+
+            for i in range(N // 2):
+                # PARTE DE CIMA DA MATRIZ
+                for j in range(N):
+                    if autovalores[j] > 0:
+                        exponencial = 1
+                    else:
+                        exponencial = np.exp(
+                            float(-sigmaT[regiao] * hj[regiao]) / abs(autovalores[j])
+                        )
+
+                    matriz_alfa[i][j] = autovetores[i][j] * exponencial
+
+                # PARTE DE BAIXO DA MATRIZ
+                for i in range(N // 2, N):
+                    for j in range(N):
+                        if autovalores[j] < 0:
+                            exponencial = 1
+                        else:
+                            exponencial = np.exp(
+                                float(-sigmaT[regiao] * hj[regiao])
+                                / abs(autovalores[j])
+                            )
+
+                        matriz_alfa[i][j] = autovetores[i][j] * exponencial
+
+            matriz_alfa_inv = np.linalg.inv(matriz_alfa)
+
+            # CÁLCULO DOS ALFAS
+            alfa = matriz_alfa_inv @ vetor_solucao
+
+            ###ETAPA ATUALIZANDO PSIS
+            for i in range(N // 2):
+                soma = 0
+                for j in range(N):
+                    if autovalores[j] < 0:
+                        exponencial = 1
+                    else:
+                        exponencial = np.exp(
+                            float(-sigmaT[regiao] * hj[regiao]) / abs(autovalores[j])
+                        )
+
+                    soma += alfa[j] * autovetores[i][j] * exponencial
+
+                psiX[nodo + 1][i] = soma + solucao_particular[i]
+
+            for i in range(N // 2, N):
+                soma = 0
+                for j in range(N):
+                    if autovalores[j] > 0:
+                        exponencial = 1
+                    else:
+                        exponencial = np.exp(
+                            float(-sigmaT[regiao] * hj[regiao]) / abs(autovalores[j])
+                        )
+                    soma += alfa[j] * autovetores[i][j] * exponencial
+
+                psiX[nodo][i] = soma + solucao_particular[i]
+
+            ###ETAPA ATUALIZANDO PSIS MÉDIOS
+            for i in range(N):
+                soma = 0
+                for j in range(N):
+                    if autovalores[j] > 0:
+                        exponencial = 1 - np.exp(
+                            float(-sigmaT[regiao] * hj[regiao]) / abs(autovalores[j])
+                        )
+                    else:
+                        exponencial = (
+                            np.exp(
+                                float(-sigmaT[regiao] * hj[regiao])
+                                / abs(autovalores[j])
+                            )
+                            - 1
+                        )
+
+                    soma += autovalores[j] * alfa[j] * autovetores[i][j] * exponencial
+                psiM[nodo][i] = (
+                    float(1 / (hj[regiao] * sigmaT[regiao])) * soma
+                ) + solucao_particular[i]
+
+            ###ETAPA CÁLCULO DO FI FINAL
+            fi_final = []
+            for x in range(pt):
+                soma_fi = 0
+                for m in range(N):
+                    soma_fi += w[m] * Decimal(f"{psiX[x][m]}")
+                fi_final.append(Decimal("0.5") * soma_fi)
+
+            contador += 1
+
+        if iteracao == 1 and n_regioes == 1 and NNT == 1:
+            fi_final = np.array(fi_final)
+            break
+        elif iteracao > 1:
+            ###ETAPA CÁLCULO DO DR
+
+            # Transformando em arrays numpy para realizar a subtração
+            fi_inicial = np.array(fi_inicial)
+            fi_final = np.array(fi_final)
+
+            resultado = abs(fi_inicial - fi_final)
+
+            # Transformando em listas
+            resultado = resultado.tolist()
+            fi_inicial = fi_inicial.tolist()
+
+            # Coletando os maiores de cada vetor, em módulo
+            maior_inicial = max(fi_inicial, key=abs)
+            maior_final = max(resultado, key=abs)
+
+            dr = abs(maior_final / maior_inicial)
+            if dr < precisao:
+                break
+
+    psiX_decimal = [[Decimal(f"{fluxo}") for fluxo in linha] for linha in psiX]
+
+    # Arredondando fi_final
+    fi_final = fi_final.tolist()
+    fi_final_formatado = [round(float(fi), 4) for fi in fi_final]
+
+    # Arredondando psiX
+    psiX_formatado = [
+        [float(f"{fluxo:.4f}") for fluxo in linha] for linha in psiX_decimal
+    ]
+
+    ###ETAPA TAXA DE ABSORÇÃO
+    fi_medio = []
+    sigmaA = []
+    soma = 0
+    for j in range(NNT):
+        for m in range(N):
+            soma += w[m] * Decimal(f"{psiM[j][m]}")
+        fi_medio.append(Decimal("0.5") * soma)
+        soma = 0
+
+    # Gerando Sigma A
+    for regiao in range(len(sigmaT)):
+        sigmaA.append(sigmaT[regiao] - sigmaS0[regiao])
+
+    regiao = regioes[0] - 1
+    taxa_absorcao = []
+    soma = 0
+    nodo = 1
+    i = 0
+    for j in range(NNT):
+        soma += sigmaA[regiao] * fi_medio[j] * hj[regiao]
+        if nodo == NN[i]:
+            i += 1
+            if i < len(regioes):
+                regiao = regioes[i] - 1
+            taxa_absorcao.append(soma / esp_R[regiao])
+            soma = 0
+            nodo = 0
+        nodo += 1
+
+    ##ETAPA TAXA DE FUGA
+    # FUGA EM 0
+    taxa_fuga = []
+    soma = 0
+    for m in range(N // 2, N):
+        soma += abs(mi[m] * w[m] * psiX_decimal[0][m])
+    taxa_fuga.append(soma)
+
+    # FUGA NO MÁXIMO DA ÚLTIMA REGIÃO
+    soma = 0
+    for m in range(N // 2):
+        soma += abs(mi[m] * w[m] * psiX_decimal[len(psiX_decimal) - 1][m])
+    taxa_fuga.append(soma)
+
+    return fi_final_formatado, psiX_formatado, iteracao, taxa_absorcao, taxa_fuga
   ```
 </details>
