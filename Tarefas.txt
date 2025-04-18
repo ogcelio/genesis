@@ -1,0 +1,6 @@
+Tarefas
+
+- dividir cada função dos métodos em arquivos diferentes
+- verificar as funções comuns entre os métodos para evitar reescrita de subrotinas
+- usar o padrão de entrada e saída de códigos feito pelo Roan
+- usar a forma de navegação de pastas do código do João
