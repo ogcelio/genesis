@@ -17,7 +17,6 @@ import copy
 import os
 import sys
 import time
-from decimal import Decimal, getcontext, InvalidOperation
 import json
 import numpy as np
 
@@ -67,8 +66,6 @@ with open(path, "r", encoding="utf8") as file:
     propriedades_1grupo = json.load(file)
 esp_R = 0
 n_regioes = 0
-
-getcontext().prec = 50  # Precisão de 50 casas
 
 primeiro_calculo = False
 
@@ -243,10 +240,10 @@ class dashboard_simulador(QMainWindow):
         self.ui.lcdNumber.display(f"{duracao:.3f}")
 
     def coletar_dados(self):  # Função que coleta dados para serem utilizados
-        N = Decimal(self.ui.ordem_quadratura.text())  # int
-        cce = Decimal(self.ui.gp1_esq_prescrita.text())
-        ccd = Decimal(self.ui.gp1_dir_prescrita.text())
-        precisao = Decimal(self.ui.precisao_internas.text())
+        N = int(self.ui.ordem_quadratura.text())  # int
+        cce = float(self.ui.gp1_esq_prescrita.text())
+        ccd = float(self.ui.gp1_dir_prescrita.text())
+        precisao = float(self.ui.precisao_internas.text())
 
         tabela = self.ui.nodos_esp_zona  # Acessa a tabela de dados
 
@@ -278,14 +275,12 @@ class dashboard_simulador(QMainWindow):
         NN = []  # Número de nodos
         reg = []
 
-        n_regioes = Decimal(self.ui.n_regioes.text())  # int
+        n_regioes = int(self.ui.n_regioes.text())  # int
         for regiao in range(int(n_regioes)):
-            esp_R.append(Decimal(espessuras[regiao]))  # Separa todas as espessuras
+            esp_R.append(float(espessuras[regiao]))  # Separa todas as espessuras
 
             if float(nodos[regiao]).is_integer():
-                NN.append(
-                    Decimal(nodos[regiao])
-                )  # Separa todos os números de nodos # int
+                NN.append(int(nodos[regiao]))  # Separa todos os números de nodos # int
             else:
                 raise nodo_invalido
 
@@ -301,12 +296,12 @@ class dashboard_simulador(QMainWindow):
         NiSigmaF = propriedades_1grupo["NiSigmaF"]
 
         for i in range(len(sigmaT)):
-            sigmaT[i] = Decimal(sigmaT[i])
-            sigmaS0[i] = Decimal(sigmaS0[i])
-            sigmaS1[i] = Decimal(sigmaS1[i])
-            sigmaS2[i] = Decimal(sigmaS2[i])
-            Qj[i] = Decimal(Qj[i])
-            NiSigmaF[i] = Decimal(NiSigmaF[i])
+            sigmaT[i] = float(sigmaT[i])
+            sigmaS0[i] = float(sigmaS0[i])
+            sigmaS1[i] = float(sigmaS1[i])
+            sigmaS2[i] = float(sigmaS2[i])
+            Qj[i] = float(Qj[i])
+            NiSigmaF[i] = float(NiSigmaF[i])
 
         return (
             sigmaT,
@@ -348,7 +343,7 @@ class dashboard_simulador(QMainWindow):
             ) = self.coletar_dados()  # Coleta os dados necessários
 
             detectar_erros(sigmaT, N, NN, regioes, esp_R)
-        except (ValueError, InvalidOperation):
+        except ValueError:
             # Atualizando etapa
             self.ui.lineEdit.setText("ERRO VI-001")
             QApplication.processEvents()  # Atualiza a tela
@@ -485,7 +480,7 @@ class dashboard_simulador(QMainWindow):
             ) = self.coletar_dados()  # Coleta os dados necessários
 
             detectar_erros(sigmaT, N, NN, regioes, esp_R)
-        except (ValueError, InvalidOperation):
+        except ValueError:
             # Atualizando etapa
             self.ui.lineEdit.setText("ERRO VI-001")
             QApplication.processEvents()  # Atualiza a tela

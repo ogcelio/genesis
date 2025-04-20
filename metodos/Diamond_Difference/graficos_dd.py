@@ -1,5 +1,4 @@
 import os  # biblioteca de sistema operacional
-from decimal import Decimal, getcontext
 
 import matplotlib.pyplot as plt  # biblioteca para plotagem
 import numpy as np  # biblioteca para operações matemáticas
@@ -9,10 +8,8 @@ from PIL import Image, ImageDraw
 
 # Gerando o gráfico principal
 def gerar_tela_dd(NN, esp_R, fi_final, regioes, n_regioes, abrir):
-    getcontext().prec = 50  # Precisão de 50 casas
     # Gerando lista com todos* os pontos do domínio
-    NNT = int(sum(NN))
-    n_regioes = int(n_regioes)
+    NNT = sum(NN)
     dominio = []
     hj = [0 for _ in range(n_regioes)]
     for regiao in range(n_regioes):
@@ -44,7 +41,7 @@ def gerar_tela_dd(NN, esp_R, fi_final, regioes, n_regioes, abrir):
 
     escala = float(esp_T / 5)
     plt.xticks(
-        np.arange(0, float(esp_T + Decimal("10e-10")), escala)
+        np.arange(0, float(esp_T + 10e-10), escala)
     )  # Definindo a escala do domínio
 
     # Plotando o gráfico de linhas

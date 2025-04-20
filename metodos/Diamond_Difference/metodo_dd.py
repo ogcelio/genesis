@@ -1,6 +1,5 @@
 import os
 import sys
-from decimal import Decimal, getcontext
 
 # DECIMAL UTILIZADO PARA QUE SEJAM EVITADOS ERROS DEVIDO A UTILIZAÇÃO DO
 # TYPE FLOAT
@@ -30,13 +29,10 @@ def diamond_difference(
     n_regioes,
     esp_R,
 ):
-    getcontext().prec = 50
     iteracao = 0  # Iniciando as iterações
-    N = int(N)
-    n_regioes = int(n_regioes)
     mi, w = quadratura(N)  # Mis e Omegas da quadratura
-    pt = int(sum(NN) + 1)  # Número de pontos totais
-    NNT = int(sum(NN))  # Número de nodos totais
+    pt = sum(NN) + 1  # Número de pontos totais
+    NNT = sum(NN)  # Número de nodos totais
 
     teste_0 = False
     for i in range(len(Qj)):
@@ -61,7 +57,7 @@ def diamond_difference(
         for j in range(NNT):
             psiM_aux = []
             for m in range(N):
-                psiM_aux.append(Decimal("0.5") * (psiX[j + 1][m] + psiX[j][m]))
+                psiM_aux.append((1 / 2) * (psiX[j + 1][m] + psiX[j][m]))
             psiM.append(psiM_aux)
 
         ###ETAPA CÁLCULO DO Ssj
@@ -87,7 +83,7 @@ def diamond_difference(
             soma_fi = 0
             for m in range(N):
                 soma_fi += w[m] * psiX[x][m]
-            fi_inicial.append(Decimal("0.5") * soma_fi)
+            fi_inicial.append((1 / 2) * soma_fi)
 
         if ccd == 0.0 and cce == 0.0 and teste_0 == False:
             # Arredondando fi_final
@@ -146,7 +142,7 @@ def diamond_difference(
             soma_fi = 0
             for m in range(N):
                 soma_fi += w[m] * psiX[x][m]
-            fi_final.append(Decimal("0.5") * soma_fi)
+            fi_final.append((1 / 2) * soma_fi)
 
         if iteracao > 1:
             ###ETAPA CÁLCULO DO DR
@@ -183,7 +179,7 @@ def diamond_difference(
     for j in range(NNT):
         for m in range(N):
             soma += w[m] * psiM[j][m]
-        fi_medio.append(Decimal("0.5") * soma)
+        fi_medio.append((1 / 2) * soma)
         soma = 0
 
     # Gerando Sigma A

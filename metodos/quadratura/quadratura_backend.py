@@ -1,10 +1,7 @@
-from decimal import Decimal, getcontext
-
 import numpy as np
 
 
 def quadratura(N):
-    getcontext().prec = 50
     M = int(0.5 * (N + 1))  # As raízes são simétricas
     mi = np.zeros(N)
     w = np.zeros(N)
@@ -46,10 +43,5 @@ def quadratura(N):
     # Transformando os arrays numpy em listas
     mi = mi.tolist()
     w = w.tolist()
-
-    # Retornando em decimal para que não ocorram erros na manipulação dos dados
-    for i in range(len(mi)):
-        mi[i] = Decimal(f"{mi[i]}")
-        w[i] = Decimal(f"{w[i]}")
 
     return mi, w
