@@ -1,6 +1,5 @@
 import os
 import sys
-import copy
 import numpy as np
 
 path_quadratura = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))

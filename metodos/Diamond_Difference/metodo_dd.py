@@ -1,9 +1,6 @@
 import os
 import sys
 
-# DECIMAL UTILIZADO PARA QUE SEJAM EVITADOS ERROS DEVIDO A UTILIZAÇÃO DO
-# TYPE FLOAT
-
 import numpy as np
 
 # Tornando a quadratura possível de ser importada
