@@ -35,10 +35,6 @@ Projeto de IC do Instituto Politécnico da Universidade do Estado do Rio de Jane
   ```py
   import os
 import sys
-from decimal import Decimal, getcontext
-
-# DECIMAL UTILIZADO PARA QUE SEJAM EVITADOS ERROS DEVIDO A UTILIZAÇÃO DO
-# TYPE FLOAT
 
 import numpy as np
 
@@ -65,13 +61,10 @@ def diamond_difference(
     n_regioes,
     esp_R,
 ):
-    getcontext().prec = 50
     iteracao = 0  # Iniciando as iterações
-    N = int(N)
-    n_regioes = int(n_regioes)
     mi, w = quadratura(N)  # Mis e Omegas da quadratura
-    pt = int(sum(NN) + 1)  # Número de pontos totais
-    NNT = int(sum(NN))  # Número de nodos totais
+    pt = sum(NN) + 1  # Número de pontos totais
+    NNT = sum(NN)  # Número de nodos totais
 
     teste_0 = False
     for i in range(len(Qj)):
@@ -96,7 +89,7 @@ def diamond_difference(
         for j in range(NNT):
             psiM_aux = []
             for m in range(N):
-                psiM_aux.append(Decimal("0.5") * (psiX[j + 1][m] + psiX[j][m]))
+                psiM_aux.append((1 / 2) * (psiX[j + 1][m] + psiX[j][m]))
             psiM.append(psiM_aux)
 
         ###ETAPA CÁLCULO DO Ssj
@@ -122,7 +115,7 @@ def diamond_difference(
             soma_fi = 0
             for m in range(N):
                 soma_fi += w[m] * psiX[x][m]
-            fi_inicial.append(Decimal("0.5") * soma_fi)
+            fi_inicial.append((1 / 2) * soma_fi)
 
         if ccd == 0.0 and cce == 0.0 and teste_0 == False:
             # Arredondando fi_final
@@ -181,7 +174,7 @@ def diamond_difference(
             soma_fi = 0
             for m in range(N):
                 soma_fi += w[m] * psiX[x][m]
-            fi_final.append(Decimal("0.5") * soma_fi)
+            fi_final.append((1 / 2) * soma_fi)
 
         if iteracao > 1:
             ###ETAPA CÁLCULO DO DR
@@ -218,7 +211,7 @@ def diamond_difference(
     for j in range(NNT):
         for m in range(N):
             soma += w[m] * psiM[j][m]
-        fi_medio.append(Decimal("0.5") * soma)
+        fi_medio.append((1 / 2) * soma)
         soma = 0
 
     # Gerando Sigma A
@@ -266,16 +259,12 @@ def diamond_difference(
   ```py
 import os
 import sys
-import copy
 import numpy as np
-from decimal import Decimal, getcontext
 
 path_quadratura = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.append(path_quadratura)
 
 from quadratura.quadratura_backend import quadratura
-
-getcontext().prec = 50
 
 
 def med(
@@ -295,11 +284,9 @@ def med(
     esp_R,
 ):
     ###ETAPA INICIALIZANDO VARIÁVEIS
-    N = int(N)  # Ordem da Quadratura
-    n_regioes = int(n_regioes)  # Quantidade de regiões
     mi, w = quadratura(N)  # Mis e Omegas da quadratura
-    pt = int(sum(NN) + 1)  # Número de pontos totais
-    NNT = int(sum(NN))  # Número de nodos totais
+    pt = sum(NN) + 1  # Número de pontos totais
+    NNT = sum(NN)  # Número de nodos totais
 
     teste_0 = False
     for i in range(len(Qj)):
@@ -329,8 +316,8 @@ def med(
         for x in range(pt):
             soma_fi = 0
             for m in range(N):
-                soma_fi += w[m] * Decimal(f"{psiX[x][m]}")
-            fi_inicial.append(Decimal("0.5") * soma_fi)
+                soma_fi += w[m] * psiX[x][m]
+            fi_inicial.append((1 / 2) * soma_fi)
 
         if ccd == 0.0 and cce == 0.0 and teste_0 == False:
             # Arredondando fi_final
@@ -490,8 +477,8 @@ def med(
             for x in range(pt):
                 soma_fi = 0
                 for m in range(N):
-                    soma_fi += w[m] * Decimal(f"{psiX[x][m]}")
-                fi_final.append(Decimal("0.5") * soma_fi)
+                    soma_fi += w[m] * psiX[x][m]
+                fi_final.append((1 / 2) * soma_fi)
 
             contador += 1
 
@@ -519,16 +506,12 @@ def med(
             if dr < precisao:
                 break
 
-    psiX_decimal = [[Decimal(f"{fluxo}") for fluxo in linha] for linha in psiX]
-
     # Arredondando fi_final
     fi_final = fi_final.tolist()
-    fi_final_formatado = [round(float(fi), 4) for fi in fi_final]
+    fi_final_formatado = [round(float(fi), 6) for fi in fi_final]
 
     # Arredondando psiX
-    psiX_formatado = [
-        [float(f"{fluxo:.4f}") for fluxo in linha] for linha in psiX_decimal
-    ]
+    psiX_formatado = [[float(f"{fluxo:.6f}") for fluxo in linha] for linha in psiX]
 
     ###ETAPA TAXA DE ABSORÇÃO
     fi_medio = []
@@ -536,8 +519,8 @@ def med(
     soma = 0
     for j in range(NNT):
         for m in range(N):
-            soma += w[m] * Decimal(f"{psiM[j][m]}")
-        fi_medio.append(Decimal("0.5") * soma)
+            soma += w[m] * psiM[j][m]
+        fi_medio.append((1 / 2) * soma)
         soma = 0
 
     # Gerando Sigma A
@@ -565,13 +548,13 @@ def med(
     taxa_fuga = []
     soma = 0
     for m in range(N // 2, N):
-        soma += abs(mi[m] * w[m] * psiX_decimal[0][m])
+        soma += abs(mi[m] * w[m] * psiX[0][m])
     taxa_fuga.append(soma)
 
     # FUGA NO MÁXIMO DA ÚLTIMA REGIÃO
     soma = 0
     for m in range(N // 2):
-        soma += abs(mi[m] * w[m] * psiX_decimal[len(psiX_decimal) - 1][m])
+        soma += abs(mi[m] * w[m] * psiX[len(psiX) - 1][m])
     taxa_fuga.append(soma)
 
     return fi_final_formatado, psiX_formatado, iteracao, taxa_absorcao, taxa_fuga
