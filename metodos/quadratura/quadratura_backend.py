@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def quadratura(N):
+def quadratura(N: int):
     M = int(0.5 * (N + 1))  # As raízes são simétricas
     mi = np.zeros(N)
     w = np.zeros(N)
@@ -39,9 +39,5 @@ def quadratura(N):
 
     for i in range(N // 2):
         w[i] = w[i + N // 2]
-
-    # Transformando os arrays numpy em listas
-    mi = mi.tolist()
-    w = w.tolist()
 
     return mi, w

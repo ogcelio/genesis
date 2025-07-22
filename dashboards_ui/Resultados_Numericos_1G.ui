@@ -1,199 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>resultados_1G</class>
+ <widget class="QDialog" name="resultados_1G">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>911</width>
-    <height>480</height>
+    <width>1033</width>
+    <height>531</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="fundo">
-   <property name="geometry">
-    <rect>
-     <x>-110</x>
-     <y>-120</y>
-     <width>1051</width>
-     <height>721</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(205, 232, 210);</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>451</width>
-     <height>131</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Segoe UI</family>
-     <pointsize>10</pointsize>
-     <weight>62</weight>
-     <italic>false</italic>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QGroupBox {
-	font: 500 10pt &quot;Segoe UI&quot;;
-    border: 1px solid black;  /* Cor da borda preta */
-}
-:title {
-    subcontrol-origin: margin;
-    subcontrol-position: top left; /* Posição no canto superior esquerdo */
-    left: 5px; /* Ajuste horizontal */
-    top: -5px; /* Ajuste vertical */
-}</string>
-   </property>
-   <property name="title">
-    <string>Fluxos Escalares</string>
-   </property>
-   <widget class="QTableWidget" name="fluxos_escalares">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>20</y>
-      <width>441</width>
-      <height>101</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <row>
-     <property name="text">
-      <string>Fluxos</string>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>X (cm)</string>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-    </row>
-   </widget>
-  </widget>
-  <widget class="QLabel" name="label">
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(52, 73, 94);</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>141</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Segoe UI</family>
-     <pointsize>12</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
-    </font>
-   </property>
-   <property name="text">
-    <string>Análise Espectral</string>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
      <width>451</width>
-     <height>111</height>
+     <height>221</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QGroupBox {
-	font: 500 10pt &quot;Segoe UI&quot;;
-    border: 1px solid black;  /* Cor da borda preta */
+	font: 700 12pt &quot;Roboto&quot;;
+	border: 1px solid white;
+	border-radius: 8px;
+	margin-top: 1ex;
 }
 :title {
+color: white;
     subcontrol-origin: margin;
-    subcontrol-position: top left; /* Posição no canto superior esquerdo */
-    left: 5px; /* Ajuste horizontal */
-    top: -4px; /* Ajuste vertical */
-}
-</string>
-   </property>
-   <property name="title">
-    <string>Taxa de Absorção por Região</string>
-   </property>
-   <widget class="QTableWidget" name="absorcao">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>431</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <row>
-     <property name="text">
-      <string>Taxas</string>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </column>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox_3">
-   <property name="geometry">
-    <rect>
-     <x>470</x>
-     <y>50</y>
-     <width>431</width>
-     <height>381</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QGroupBox {
-	font: 500 10pt &quot;Segoe UI&quot;;
-    border: 1px solid black;  /* Cor da borda preta */
-}
-:title {
-    subcontrol-origin: margin;
-    subcontrol-position: top left; /* Posição no canto superior esquerdo */
-    left: 5px; /* Ajuste horizontal */
-    top: -5px; /* Ajuste vertical */
+    subcontrol-position: top center; /* Posição no canto superior esquerdo */
 }
 </string>
    </property>
@@ -201,21 +43,28 @@
     <string>Fluxos Angulares</string>
    </property>
    <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
    </property>
    <widget class="QTableWidget" name="fluxos_angulares">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>20</y>
-      <width>411</width>
-      <height>351</height>
+      <y>30</y>
+      <width>431</width>
+      <height>181</height>
      </rect>
     </property>
     <property name="font">
      <font>
+      <family>Roboto</family>
       <pointsize>10</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 10pt &quot;Roboto&quot;;
+background-color: rgb(255, 255, 255);</string>
     </property>
     <row>
      <property name="text">
@@ -259,145 +108,366 @@
     </row>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_4">
+  <widget class="QGroupBox" name="groupBox_6">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>310</y>
-     <width>451</width>
-     <height>121</height>
+     <x>480</x>
+     <y>10</y>
+     <width>541</width>
+     <height>511</height>
     </rect>
    </property>
    <property name="styleSheet">
     <string notr="true">QGroupBox {
-	font: 500 10pt &quot;Segoe UI&quot;;
-    border: 1px solid black;  /* Cor da borda preta */
+	font: 700 12pt &quot;Roboto&quot;;
+	border: 1px solid white;
+	border-radius: 8px;
+	margin-top: 1ex;
 }
 :title {
+color: white;
     subcontrol-origin: margin;
-    subcontrol-position: top left; /* Posição no canto superior esquerdo */
-    left: 5px; /* Ajuste horizontal */
-    top: -5px; /* Ajuste vertical */
-}
-</string>
+    subcontrol-position: top center; /* Posição no canto superior esquerdo */
+}</string>
    </property>
    <property name="title">
-    <string>Taxa de Fuga</string>
+    <string>Fluxo Escalar de nêutrons no domínio</string>
    </property>
-   <widget class="QLabel" name="label_2">
+   <widget class="QGraphicsView" name="grafico">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>101</width>
-      <height>31</height>
+      <x>20</x>
+      <y>30</y>
+      <width>501</width>
+      <height>371</height>
      </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Segoe UI</family>
-     </font>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;No ponto 0 cm = &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="ponto_0_fuga">
+   <widget class="QGraphicsView" name="grafico_intensidade">
     <property name="geometry">
      <rect>
-      <x>120</x>
-      <y>20</y>
-      <width>121</width>
+      <x>20</x>
+      <y>410</y>
+      <width>501</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="cor_maximo">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>460</y>
+      <width>31</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label_20">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>70</y>
+      <x>60</x>
+      <y>460</y>
       <width>61</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Segoe UI</family>
+      <family>Roboto</family>
+      <pointsize>10</pointsize>
+      <italic>false</italic>
+      <fontweight>Medium</fontweight>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">color: white;
+font: 500 10pt &quot;Roboto&quot;;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;No ponto&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Máximo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="ponto_x">
+   <widget class="QGraphicsView" name="cor_minimo">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>70</y>
-      <width>41</width>
+      <x>150</x>
+      <y>460</y>
+      <width>31</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="label_21">
     <property name="geometry">
      <rect>
-      <x>130</x>
-      <y>70</y>
-      <width>31</width>
+      <x>190</x>
+      <y>460</y>
+      <width>61</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Segoe UI</family>
+      <family>Roboto</family>
+      <pointsize>10</pointsize>
+      <italic>false</italic>
+      <fontweight>Medium</fontweight>
      </font>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">color: white;
+font: 500 10pt &quot;Roboto&quot;;</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;cm =&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Mínimo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="ponto_x_fuga">
+   <widget class="QPushButton" name="ampliar_grafico">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>70</y>
-      <width>121</width>
+      <x>380</x>
+      <y>460</y>
+      <width>131</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>11</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: white;
+font: 700 11pt &quot;Roboto&quot;;</string>
+    </property>
+    <property name="text">
+     <string>Ampliar Gráfico</string>
+    </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="mostrar_valores">
+  <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>440</y>
-     <width>121</width>
-     <height>31</height>
+     <y>240</y>
+     <width>451</width>
+     <height>141</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>Segoe UI</family>
-     <pointsize>9</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
+     <family>Roboto</family>
+     <pointsize>12</pointsize>
+     <italic>false</italic>
+     <bold>true</bold>
     </font>
    </property>
-   <property name="text">
-    <string>Mostrar Valores</string>
+   <property name="styleSheet">
+    <string notr="true">QGroupBox {
+	font: 700 12pt &quot;Roboto&quot;;
+	border: 1px solid white;
+	border-radius: 8px;
+	margin-top: 1ex;
+}
+:title {
+color: white;
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* Posição no canto superior esquerdo */
+
+}</string>
    </property>
+   <property name="title">
+    <string>Fluxos Escalares</string>
+   </property>
+   <widget class="QTableWidget" name="fluxos_escalares">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>431</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>10</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 10pt &quot;Roboto&quot;;
+background-color: rgb(255, 255, 255);</string>
+    </property>
+    <row>
+     <property name="text">
+      <string>Fluxos</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>X (cm)</string>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+    </row>
+   </widget>
+  </widget>
+  <widget class="QPushButton" name="taxas">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>480</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: white;
+font: 500 10pt &quot;Roboto&quot;;</string>
+   </property>
+   <property name="text">
+    <string>Mostrar Taxas</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>250</x>
+     <y>390</y>
+     <width>211</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QGroupBox {
+	font: 700 12pt &quot;Roboto&quot;;
+	border: 1px solid white;
+	border-radius: 8px;
+	margin-top: 1ex;
+}
+:title {
+color: white;
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* Posição no canto superior esquerdo */
+}</string>
+   </property>
+   <property name="title">
+    <string>Número de Iterações</string>
+   </property>
+   <widget class="QLineEdit" name="iteracoes_1g">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>30</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>12</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+font: 700 12pt &quot;Roboto&quot;;</string>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>390</y>
+     <width>211</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QGroupBox {
+	font: 700 12pt &quot;Roboto&quot;;
+	border: 1px solid white;
+	border-radius: 8px;
+	margin-top: 1ex;
+}
+:title {
+color: white;
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* Posição no canto superior esquerdo */
+}</string>
+   </property>
+   <property name="title">
+    <string>Duração do Cálculo (s):</string>
+   </property>
+   <widget class="QLineEdit" name="duracao_calculo">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>30</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Roboto</family>
+      <pointsize>12</pointsize>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LayoutDirection::LeftToRight</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);
+font: 700 12pt &quot;Roboto&quot;;</string>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

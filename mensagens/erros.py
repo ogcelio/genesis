@@ -18,6 +18,10 @@ class regiao_float(Exception):
     pass
 
 
+class reator_nao_selecionado(Exception):
+    pass
+
+
 def detectar_erros(sigmaT, N, NN, regioes, esp_R):
     if N % 2 != 0 or N <= 0:
         raise quadratura_invalida(

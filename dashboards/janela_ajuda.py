@@ -41,6 +41,8 @@ class Janela_Instrucoes(QWidget):
             '\tEste erro ocorre sempre que o operador tenta gerar um gráfico na opção "Abrir Gráfico" em um momento em que nenhum cálculo foi feito previamente. Certifique-se de que algum dos métodos foi iniciado e finalizado para que os devidos resultados sejam mostrados\n\n'
             "1.2.2 AI-002:\n\n"
             '\tEste erro ocorre sempre que o operador, na janela de "Resultados Numéricos", tenta mostrar os resultados de um cálculo, em uma situação onde nenhum cálculo foi realizado previamente. Certifique-se de que algum dos métodos foi iniciado e finalizado para que os devidos resultados sejam mostrados\n\n'
+            "1.2.3 AI-003:\n\n"
+            "\tEste erro ocorre quando um conjunto não está registrado no histórico. Certifique-se de abrir a janela PROPRIEDADES e selecionar um conjunto para que o método seja executado.\n\n"
         )
         self.texto.setReadOnly(True)  # Impede edição do texto
         layout.addWidget(self.texto)
