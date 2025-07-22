@@ -349,7 +349,7 @@ class dashboard_simulador(QMainWindow):
                 f"{taxa_absorcao}\n\n"
                 "Taxa de Fuga:\n"
                 f"{taxa_fuga}"
-                f"\n\n\n{50*"-"}\n\n\n"
+                f"\n\n\n{50*'-'}\n\n\n"
             )
         self.abrir_resultados_1G()
         ordem_metodo += 1
