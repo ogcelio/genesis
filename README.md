@@ -26,6 +26,8 @@ git clone https://github.com/ogcelio/genesis.git
 cd genesis
 ```
 
+### Criando ambiente de trabalho:
+
 3: Por segurança, crie um ambiente virtual:
 
 No Linux:
@@ -45,6 +47,8 @@ convenção, é venv.
 
 4: IMPORTANTE: Habilite o ambiente virtual: No Linux:
 
+No Linux:
+
 ```md
 source venv/bin/activate
 ```
@@ -58,7 +62,7 @@ No Windows:
 5: Instale todos os requerimentos para o funcionamento do simulador:
 
 ```md
-pip install -r .\requirements.txt
+pip install -r requirements.txt
 ```
 
 6: Certifique-se que o código está sendo interpretado com o python correto, o
@@ -72,6 +76,11 @@ Para desativar, basta digitar no terminal:
 ```md
 deactivate
 ```
+
+## OBSERVAÇÃO:
+
+Para fazer um push, você deve, primeiramente, registrar sua conta no seu
+sistema.
 
 </details>
 
