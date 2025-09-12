@@ -8,47 +8,72 @@ Janeiro
 <details>
   <summary>Método</summary>
     
-    ### INICIALIZAÇÃO DO REPOSITÓRIO:
+## INICIALIZAÇÃO DO REPOSITÓRIO:
 
-- CASO VÁ RODAR O SIMULADOR EM UM COMPUTADOR PESSOAL:
+### Clonando o Repositório:
 
-  1: Por segurança, crie um ambiente virtual rodando o seguinte comando no
-  terminal:
+0: No Linux, abra qualquer terminal. No Windows, abra o Git Bash.
 
-  ```md
-  python -m venv venv
-  ```
+1: No terminal, digite:
 
-  Obs.: O segundo venv representa o nome da pasta do ambiente virtual que, por
-  convenção, é venv.
+```md
+git clone https://github.com/ogcelio/genesis.git
+```
 
-  2: IMPORTANTE: Habilite o ambiente virtual rodando o seguinte comando no
-  terminal (Windows):
+2: Caminhe para a pasta do simulador:
 
-  ```md
-  .\venv\Scripts\activate
-  ```
+```md
+cd genesis
+```
 
-  3: Instale todos os requerimentos para que o simulador seja executado com o
-  seguinte comando:
+3: Por segurança, crie um ambiente virtual:
 
-  ```md
-  pip install -r .\requirements.txt
-  ```
+No Linux:
 
-  4: Certifique-se que o código está sendo interpretado com o python correto, o
-  que pode ser conferido na parte de baixo do VS Code Exemplo: Python 3.13.1
-  ('venv':venv)
+```md
+python3 -m venv venv
+```
 
-  5: Pronto, você pode rodar normalmente o simulador. Toda alteração ou
-  instalação feita com o ambiente virtual ativado não afeta o computador de
-  forma global. Para desativar, basta digitar no terminal:
+No Windows:
 
-  ```md
-  deactivate
-  ```
+```md
+python -m venv venv
+```
 
-  </details>
+Obs.: O segundo venv representa o nome da pasta do ambiente virtual que, por
+convenção, é venv.
+
+4: IMPORTANTE: Habilite o ambiente virtual: No Linux:
+
+```md
+source venv/bin/activate
+```
+
+No Windows:
+
+```md
+.\venv\Scripts\activate
+```
+
+5: Instale todos os requerimentos para o funcionamento do simulador:
+
+```md
+pip install -r .\requirements.txt
+```
+
+6: Certifique-se que o código está sendo interpretado com o python correto, o
+que pode ser conferido na parte de baixo do VS Code Exemplo: Python 3.13.1
+('venv':venv)
+
+5: Pronto, você pode rodar normalmente o simulador. Toda alteração ou instalação
+feita com o ambiente virtual ativado não afeta o computador de forma global.
+Para desativar, basta digitar no terminal:
+
+```md
+deactivate
+```
+
+</details>
 
 ## Método Diamond Difference
 
