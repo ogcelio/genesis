@@ -45,7 +45,7 @@ python -m venv venv
 Obs.: O segundo venv representa o nome da pasta do ambiente virtual que, por
 convenção, é venv.
 
-4: IMPORTANTE: Habilite o ambiente virtual: No Linux:
+4: IMPORTANTE: Habilite o ambiente virtual:
 
 No Linux:
 
