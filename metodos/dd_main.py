@@ -78,10 +78,10 @@ def diamond_difference(
         initial_fi = calc_fi(N, NNT, w, psiX)
 
         ###ETAPA IDA
-        psiX = foward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT, sigmaS0)
+        psiX = foward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT)
 
         ###ETAPA VOLTA
-        psiX = backward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT, sigmaS0)
+        psiX = backward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT)
 
         ###ETAPA CÁLCULO DO FI FINAL
         final_fi = calc_fi(N, NNT, w, psiX)

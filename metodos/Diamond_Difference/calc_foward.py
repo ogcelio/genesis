@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 
-def foward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT, sigmaS0):
+def foward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT):
     reg = regs[0] - 1
     node = 0
     i = 0
