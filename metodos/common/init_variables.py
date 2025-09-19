@@ -13,7 +13,7 @@ def init_psiX(N, NNT, cce, ccd):
 def init_hj(NN, n_regs, esp_R):
     hj = zeros(n_regs)
     for regiao in range(n_regs):
-        hj[regiao] = esp_R[regiao] / NN[regiao]  # Espessura do nodo\
+        hj[regiao] = esp_R[regiao] / NN[regiao]  # Espessura do nodo
 
     return hj
 
