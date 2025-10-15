@@ -1,7 +1,4 @@
-from copy import deepcopy
-
-
-def backward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT):
+def backward(N, NN, NNT, REGS, psi, H, ss, Q, MI, SIGMA_T):
     """
     Calcula os fluxos angulares do processo iterativo de volta do método numérico Diamond Difference.
 
@@ -13,45 +10,41 @@ def backward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT):
         Contém o número de nodos de cada REGIÃO do domínio.
     NNT -> int
         Quantidade de nodos totais do domínio.
-    regs -> Array (Lista, Tupla ou Array Numpy)
+    REGS -> Array (Lista, Tupla ou Array Numpy)
         Contém a zona material de cada REGIÃO do domínio.
-    psiX -> Array Numpy
+    psi -> Array Numpy
         Contém todos os N fluxos angulares do domínio, separados por cada PONTO do mesmo.
-    hj -> Array (Lista, Tupla ou Array Numpy)
+    H -> Array (Lista, Tupla ou Array Numpy)
         Contém o tamanho dos nodos de cada REGIÃO do domínio.
-    Ssj -> Array (Lista, Tupla ou Array Numpy)
+    ss -> Array (Lista, Tupla ou Array Numpy)
         Contém o valor da fonte de espalhamento de cada NODO do domínio.
-    Qj -> Array (Lista, Tupla ou Array Numpy)
+    Q -> Array (Lista, Tupla ou Array Numpy)
         Contém o valor da fonte fixa em cada REGIÃO do domínio.
-    mi -> Array (Lista, Tupla ou Array Numpy)
+    MI -> Array (Lista, Tupla ou Array Numpy)
         Contém o valor das N raízes do polinônio de Lagrange, que representam as direções discretas de propagação das particulas neutras.
-    sigmaT -> Array (Lista, Tupla ou Array Numpy)
+    SIGMA_T -> Array (Lista, Tupla ou Array Numpy)
         Contém o valor da seção de choque macroscópica total de cada REGIÃO.
 
     Retorna:
     -------
-    psiX -> Array Numpy
+    psi -> Array Numpy
         Fluxos angulares atualizados.
     """
-    ultima_regiao = len(regs) - 1
-    regiao = regs[ultima_regiao] - 1
-    nodo = 0
-    i = ultima_regiao
-    psiX_backward = deepcopy(psiX)
-    for j in range(NNT - 1, -1, -1):
-        if nodo == NN[i]:
-            i -= 1
-            regiao = regs[i] - 1
-            nodo = 0
-        for m in range((N // 2), N):
-            psiX_backward[j][m] = (
-                (
-                    ((abs(mi[m]) / hj[i]) - (sigmaT[regiao] / 2))
-                    * psiX_backward[j + 1][m]
-                )
-                + Ssj[j]
-                + Qj[regiao]
-            ) / ((abs(mi[m]) / hj[i]) + (sigmaT[regiao] / 2))
-        nodo += 1
+    node = NNT - 1
 
-    return psiX_backward
+    for index_reg, num_nodes in reversed(list(enumerate(NN))):
+        reg = REGS[index_reg] - 1
+        for j in range(num_nodes):
+            for m in range(N // 2, N):
+                psi[node][m] = (
+                    (
+                        ((abs(MI[m]) / H[index_reg]) - (SIGMA_T[reg] / 2))
+                        * psi[node + 1][m]
+                    )
+                    + ss[node]
+                    + Q[reg]
+                ) / ((abs(MI[m]) / H[index_reg]) + (SIGMA_T[reg] / 2))
+
+            node -= 1
+
+    return psi
