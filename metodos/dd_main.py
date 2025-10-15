@@ -6,7 +6,7 @@ from metodos.quadratura.quadratura_backend import quadratura
 from metodos.Diamond_Difference.calc_psiM import calc_psiM
 from metodos.Diamond_Difference.calc_foward import foward
 from metodos.Diamond_Difference.calc_backward import backward
-from metodos.Diamond_Difference.calc_ssj import calc_ssj
+from metodos.Diamond_Difference.calc_ss import calc_ss
 
 from metodos.common.calc_fi import calc_fi
 from metodos.common.init_variables import init_psiX, init_hj
@@ -18,38 +18,39 @@ from metodos.common.trivial_sol_test import trivial_sol
 
 
 def diamond_difference(
-    sigmaT,
-    sigmaS0,
-    sigmaS1,
-    sigmaS2,
-    Qj,
-    NiSigmaF,
+    SIGMA_T,
+    SIGMA_S0,
+    SIGMA_S1,
+    SIGMA_S2,
+    Q,
+    NI_SIGMA_F,
     N,
-    cce,
-    ccd,
-    prec,
+    CCE,
+    CCD,
+    PREC,
     NN,
-    regs,
-    n_regs,
-    esp_R,
+    REGS,
+    NUM_REGS,
+    ESP_REGS,
 ):
-    # Coletando tempo inicial
+    # Coletando o tempo inicial:
     initial_time = perf_counter()
 
-    ###ETAPA INICIALIZAÇÃO DE VARIÁVEIS
+    # ETAPA INICIALIZACAO DE VARIAVEIS
+    MI, W = quadratura(N)
+    NNT = sum(NN)
 
-    mi, w = quadratura(N)  # Mis e Omegas da quadratura
-    NNT = sum(NN)  # Número total de nodos
-    psiX = init_psiX(N, NNT, cce, ccd)  # Fluxos Angulares
-    hj = init_hj(NN, n_regs, esp_R)  # Espessura do nodo por região
-    iteracao = 0
+    psi = init_psiX(N, NNT, CCE, CCD)
+    H = init_hj(NN, NUM_REGS, ESP_REGS)
 
-    if trivial_sol(Qj, cce, ccd, n_regs):
+    iteration = 0
+
+    if trivial_sol(Q, CCE, CCD, NUM_REGS):
         # Arredondando fi_final
         initial_fi = np.zeros(NNT + 1)
 
-        # Arredondando psiX
-        abs_rate = np.zeros(n_regs)
+        # Arredondando psi
+        abs_rate = np.zeros(NUM_REGS)
         escape_rate = np.zeros(2)
 
         # Coletando Tempo final
@@ -57,59 +58,62 @@ def diamond_difference(
 
         # Calculando tempo de execução
         execution_time = abs(final_time - initial_time)
+
         return (
             initial_fi,
-            psiX,
-            iteracao,
+            psi,
+            iteration,
             abs_rate,
             escape_rate,
             execution_time,
-        )  # Caso fontes e condições de contorno sejam nulas, o código retorna os fluxos completamente preenchidos de zeros
+        )  # Caso fontes e condições de contorno sejam nulas, o código retorna os fluxos completamente preenchidos de zero
 
     while True:
-        iteracao += 1
-        ###ETAPA CÁLCULO DOS PSIS MÉDIOS
-        psiM = calc_psiM(N, NNT, psiX)
+        # ETAPA CALCULO DOS FLUXOS ANGULARES MEDIOS
+        psim = calc_psiM(N, NNT, psi)
 
-        ###ETAPA CÁLCULO DO Ssj
-        Ssj = calc_ssj(N, NN, NNT, regs, psiM, w, sigmaS0)
+        # ETAPA CALCULO DO Ss
+        ss = calc_ss(N, NN, NNT, REGS, psim, W, SIGMA_S0)
 
         ###ETAPA CÁLCULO DO FI INICIAL
-        initial_fi = calc_fi(N, NNT, w, psiX)
+        initial_fi = calc_fi(N, NNT, W, psi)
 
         ###ETAPA IDA
-        psiX = foward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT)
+        psi = foward(N, NN, REGS, psi, H, ss, Q, MI, SIGMA_T)
 
         ###ETAPA VOLTA
-        psiX = backward(N, NN, NNT, regs, psiX, hj, Ssj, Qj, mi, sigmaT)
+        psi = backward(N, NN, NNT, REGS, psi, H, ss, Q, MI, SIGMA_T)
 
         ###ETAPA CÁLCULO DO FI FINAL
-        final_fi = calc_fi(N, NNT, w, psiX)
+        final_fi = calc_fi(N, NNT, W, psi)
+
+        iteration += 1
 
         ###ETAPA CÁLCULO DO DR
         dr = calc_dr(initial_fi, final_fi)
-        if dr < prec:
+        if dr < PREC:
             break
 
     ###ETAPA ATUALIZAÇÃO DOS PSIS MÉDIOS
-    psiM = calc_psiM(N, NNT, psiX)
+    psim = calc_psiM(N, NNT, psi)
 
     ###ETAPA TAXA DE ABSORÇÃO
     # Fi Medio
-    average_fi = 2 * calc_fi(N, NNT - 1, w, psiM)
+    average_fi = 2 * calc_fi(N, NNT - 1, W, psim)
 
     # Gerando Sigma A
-    sigmaA = calc_sigmaA(sigmaT, sigmaS0)
+    SIGMA_A = calc_sigmaA(SIGMA_T, SIGMA_S0)
 
     # Taxa de Absorção
-    abs_rate = calc_abs_rate(NN, regs, average_fi, hj, sigmaA)
+    abs_rate = calc_abs_rate(NN, REGS, average_fi, H, SIGMA_A)
 
     ###ETAPA TAXA DE FUGA
-    escape_rate = calc_escape_rate(N, psiX, mi, w)
+    escape_rate = calc_escape_rate(N, psi, MI, W)
 
     # Coletando Tempo final
     final_time = perf_counter()
 
     # Calculando tempo de execução
     execution_time = abs(final_time - initial_time)
-    return final_fi, psiX, iteracao, abs_rate, escape_rate, execution_time
+
+    return final_fi, psi, iteration, abs_rate, escape_rate, execution_time

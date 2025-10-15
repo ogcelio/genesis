@@ -9,7 +9,7 @@ from metodos.MED.calc_eigen import calc_eigen
 from metodos.MED.calc_part_sol import calc_part_sol
 from metodos.MED.calc_alfa import calc_alfa
 
-from metodos.Diamond_Difference.calc_ssj import calc_ssj
+from metodos.Diamond_Difference.calc_ss import calc_ss
 
 from metodos.MED_Modified.calc_psiX import calc_psiX
 
@@ -114,7 +114,7 @@ def med_mod(
             )
 
             ###ETAPA Calculando Ssj
-            Ssj = calc_ssj(N, NN, NNT, regs, psiM, w, sigmaS0)
+            Ssj = calc_ss(N, NN, NNT, regs, psiM, w, sigmaS0)
 
             ###ETAPA ATUALIZANDO PSIS
             psiX = calc_psiX(N, psiX, psiM, Ssj, hj, Qj, sigmaT, mi, node, reg, k)
