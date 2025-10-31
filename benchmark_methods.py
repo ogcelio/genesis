@@ -2,19 +2,30 @@ import json
 from metodos.med_main import med
 from metodos.med_mod_main import med_mod
 from metodos.dd_main import diamond_difference
+from metodos.rm_main import response_matrix
 import numpy as np
 from time import perf_counter
+
+
+""" N = 4
+cce = 1
+ccd = 0
+prec = 1e-8
+NN = [1, 1]
+regs = [1, 2]
+n_regs = 2
+esp_R = [5, 5] """
 
 N = 4
 cce = 1
 ccd = 0
-prec = 1e-8
-NN = [100, 100]
+prec = 10e-6
+NN = [1, 1]
 regs = [1, 2]
 n_regs = 2
 esp_R = [5, 5]
 
-with open("benchmark/propriedades.json", "r", encoding="utf8") as file:
+with open("benchmark_data.json", "r", encoding="utf8") as file:
     propriedades_1grupo = json.load(file)
 
 sigmaT = propriedades_1grupo["sigmaT"]
@@ -32,29 +43,41 @@ for i in range(len(sigmaT)):
     Qj[i] = float(Qj[i])
     NiSigmaF[i] = float(NiSigmaF[i])
 
-dd_novo = []
+final_fi, psiX, iteracao, abs_rate, escape_rate, execution_time = med(
+    sigmaT,
+    sigmaS0,
+    sigmaS1,
+    sigmaS2,
+    Qj,
+    NiSigmaF,
+    N,
+    cce,
+    ccd,
+    prec,
+    NN,
+    regs,
+    n_regs,
+    esp_R,
+)
+print(psiX)
 
-for i in range(100):
-    initial = perf_counter()
-    final_fi, psiX, iteracao, abs_rate, escape_rate, execution_time = (
-        diamond_difference(
-            sigmaT,
-            sigmaS0,
-            sigmaS1,
-            sigmaS2,
-            Qj,
-            NiSigmaF,
-            N,
-            cce,
-            ccd,
-            prec,
-            NN,
-            regs,
-            n_regs,
-            esp_R,
-        )
-    )
-    final = perf_counter()
-    dd_novo.append(final - initial)
+print(50 * "-")
 
-print("MEDIA DD ANTIGO: ", (sum(dd_novo) / 100))
+final_fi, psiX, iteracao, escape_rate, execution_time = response_matrix(
+    sigmaT,
+    sigmaS0,
+    sigmaS1,
+    sigmaS2,
+    Qj,
+    NiSigmaF,
+    N,
+    cce,
+    ccd,
+    prec,
+    NN,
+    regs,
+    n_regs,
+    esp_R,
+)
+
+print(psiX)
