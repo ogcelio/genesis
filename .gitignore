@@ -1,5 +1,6 @@
 venv/
-__pycache__/
+*/*/__pycache__/
+*/__pycache__/
 imagens/grafico_regioes.png
 imagens/Grafico.png
 imagens/intensidade.png
