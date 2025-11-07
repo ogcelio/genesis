@@ -48,7 +48,7 @@ from dashboards.janela_taxas import Ui_taxas_resultado
 from metodos.dd_main import (
     diamond_difference,  # Importando o Diamond Difference
 )
-from metodos.med_main import med  # Importando o MED
+from metodos.sdm_main import sdm
 from metodos.med_mod_main import med_mod
 from metodos.common.graphics import (
     main_graphic,
@@ -455,7 +455,7 @@ class dashboard_simulador(QMainWindow):
                 )
             )
         elif metodo_func == "SDM":
-            fi_final, psiX, iteracao, taxa_absorcao, taxa_fuga, duracao = med(
+            fi_final, psiX, iteracao, taxa_absorcao, taxa_fuga, duracao = sdm(
                 sigmaT,
                 sigmaS0,
                 sigmaS1,
