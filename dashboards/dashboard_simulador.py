@@ -95,6 +95,8 @@ class Ui_MainWindow(object):
         self.actionMED.setObjectName("actionMED")
         self.actionMED_Modificado = QAction(MainWindow)
         self.actionMED_Modificado.setObjectName("actionMED_Modificado")
+        self.actionResponse_Matrix = QAction(MainWindow)
+        self.actionResponse_Matrix.setObjectName("actionResponse_Matrix")
         self.actionRelatorio = QAction(MainWindow)
         self.actionRelatorio.setObjectName("actionRelatorio")
         self.actionMesclarMetodos = QAction(MainWindow)
@@ -419,6 +421,7 @@ class Ui_MainWindow(object):
         self.menuM_tdos_1_Grupo.addAction(self.actionDiamond_Difference_DD)
         self.menuM_tdos_1_Grupo.addAction(self.actionMED)
         self.menuM_tdos_1_Grupo.addAction(self.actionMED_Modificado)
+        self.menuM_tdos_1_Grupo.addAction(self.actionResponse_Matrix)
         self.menuResultados.addAction(self.actionNumericos_1G)
         self.menuPropriedades.addAction(self.actionFisicos_Materiais_1G)
         self.menuRelatorio_de_Simulacao.addAction(self.actionRelatorio)
@@ -471,6 +474,9 @@ class Ui_MainWindow(object):
         self.actionMED.setText(QCoreApplication.translate("MainWindow", "SDM", None))
         self.actionMED_Modificado.setText(
             QCoreApplication.translate("MainWindow", "MSD", None)
+        )
+        self.actionResponse_Matrix.setText(
+            QCoreApplication.translate("MainWindow", "Response Matrix", None)
         )
         self.actionRelatorio.setText(
             QCoreApplication.translate("MainWindow", "Mostrar", None)
