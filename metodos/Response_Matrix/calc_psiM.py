@@ -30,9 +30,9 @@ def calc_psiM(
 
             M_matrix[i][j] = eigenvalues[j] * eigenvectors[i][j] * exponential
 
-    psim_vec = (M_matrix @ (inv_aux_in @ sol_dif)) + part_sol
+    psim_vec = M_matrix @ (inv_aux_in @ sol_dif)
 
     for m in range(N):
-        psiM[node][m] = psim_vec[m] / (SIGMA_T[reg] * H[index_reg])
+        psiM[node][m] = (psim_vec[m] / (SIGMA_T[reg] * H[index_reg])) + part_sol[m]
 
     return psiM
