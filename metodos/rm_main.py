@@ -15,7 +15,7 @@ from metodos.SDM.calc_eigen import calc_eigen
 from metodos.SDM.calc_part_sol import calc_part_sol
 
 from metodos.Response_Matrix.calc_aux_em import calc_aux_em
-from metodos.Response_Matrix.calc_aux_in import calc_inv_aux_in
+from metodos.Response_Matrix.calc_inv_aux_in import calc_inv_aux_in
 from metodos.Response_Matrix.calc_psi import calc_psi
 from metodos.Response_Matrix.calc_psiM import calc_psiM
 from metodos.Response_Matrix.calc_solution_dif import calc_sol_dif
@@ -72,6 +72,9 @@ def response_matrix(
     # CALCULANDO AUTOVALORES E AUTOVETORES
     EIGEN_DICT = calc_eigen(N, REGS, MI, W, C0)
 
+    # CALCULANDO SOLUÇÕES PARTICULARES
+    PART_SOL_DICT = calc_part_sol(N, Q, REGS, SIGMA_T, SIGMA_S0, W)
+
     while True:
         iteration += 1
 
@@ -87,25 +90,25 @@ def response_matrix(
             eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
             eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
 
+            # COLETANDO SOLUÇÃO PARTICULAR
+            part_sol = PART_SOL_DICT[f"{reg}"]
+
+            # CALCULANDO A MATRIZ AUXILIAR DOS INCIDENTES INVERSA
+            inv_aux_in = calc_inv_aux_in(
+                N, H, SIGMA_T, eigenvalues, eigenvectors, reg, index_reg
+            )
+
+            # CALCULANDO A MATRIZ AUXILIAR DOS EMERGENTES
+            aux_em = calc_aux_em(
+                N, H, SIGMA_T, eigenvalues, eigenvectors, reg, index_reg
+            )
+
             for j in range(num_nodes):
-                # CALCULANDO A SOLUÇÃO PARTICULAR INTRANODAL
-                part_sol = calc_part_sol(N, Q, SIGMA_T, SIGMA_S0, W, reg)
-
-                # CALCULANDO A MATRIZ AUXILIAR DOS INCIDENTES INVERSA
-                inv_aux_in = calc_inv_aux_in(
-                    N, H, SIGMA_T, eigenvalues, eigenvectors, reg, index_reg
-                )
-
-                # CALCULANDO A MATRIZ AUXILIAR DOS EMERGENTES
-                aux_em = calc_aux_em(
-                    N, H, SIGMA_T, eigenvalues, eigenvectors, reg, index_reg
-                )
-
                 # CALCULANDO A DIFERENÇA ENTRE FLUXO ANGULAR INCIDENTE E SOLUÇÃO PARTICULAR
                 sol_dif = calc_sol_dif(N, psi, node, part_sol)
 
                 # ATUALIZANDO FLUXOS ANGULARES
-                psi = calc_psi(N, node, psi, aux_em, inv_aux_in, sol_dif, part_sol)
+                psi = calc_psi(N, psi, node, aux_em, inv_aux_in, sol_dif, part_sol)
 
                 # ATUALIZANDO FLUXOS ANGULARES MÉDIOS
                 psiM = calc_psiM(

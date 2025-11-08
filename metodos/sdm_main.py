@@ -69,6 +69,9 @@ def sdm(
     # CALCULANDO AUTOVALORES E AUTOVETORES
     EIGEN_DICT = calc_eigen(N, REGS, MI, W, C0)
 
+    # CALCULANDO SOLUÇÕES PARTICULARES
+    PART_SOL_DICT = calc_part_sol(N, Q, REGS, SIGMA_T, SIGMA_S0, W)
+
     while True:
         iteration += 1
 
@@ -84,10 +87,10 @@ def sdm(
             eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
             eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
 
-            for j in range(num_nodes):
-                # CALCULANDO A SOLUÇÃO PARTICULAR INTRANODAL
-                part_sol = calc_part_sol(N, Q, SIGMA_T, SIGMA_S0, W, reg)
+            # COLETANDO SOLUÇÃO PARTICULAR
+            part_sol = PART_SOL_DICT[f"{reg}"]
 
+            for j in range(num_nodes):
                 # CALCULANDO ALFAS
                 alfa = calc_alfa(
                     N,
