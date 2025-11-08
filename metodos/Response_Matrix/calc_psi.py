@@ -3,8 +3,8 @@ from numpy import ndarray
 
 def calc_psi(
     N: int,
-    node: int,
     psi: ndarray,
+    node: int,
     aux_em: ndarray,
     inv_aux_in: ndarray,
     sol_dif: ndarray,
