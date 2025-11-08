@@ -49,7 +49,7 @@ from metodos.dd_main import (
     diamond_difference,  # Importando o Diamond Difference
 )
 from metodos.sdm_main import sdm
-from metodos.med_mod_main import med_mod
+from metodos.msd_main import msd
 from metodos.common.graphics import (
     main_graphic,
     heat_graphic,
@@ -87,6 +87,7 @@ with open(relatorio_path, "w") as file:
     pass
 with open(cache_path, "w") as file:
     json.dump({}, file, indent=2)
+
 esp_R = 0
 n_regioes = 0
 method = ""
@@ -472,7 +473,7 @@ class dashboard_simulador(QMainWindow):
                 esp_R,
             )
         elif metodo_func == "MSD":
-            fi_final, psiX, iteracao, taxa_absorcao, taxa_fuga, duracao = med_mod(
+            fi_final, psiX, iteracao, taxa_absorcao, taxa_fuga, duracao = msd(
                 sigmaT,
                 sigmaS0,
                 sigmaS1,
