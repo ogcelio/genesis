@@ -1,160 +1,160 @@
-import numpy as np
 from time import perf_counter
+from numpy import zeros
 
 from metodos.quadratura.quadratura_backend import quadratura
 
-from metodos.MED.calc_psiM import calc_psiM
-from metodos.MED.calc_psiX import calc_psiX
-from metodos.MED.calc_eigen import calc_eigen
-from metodos.MED.calc_part_sol import calc_part_sol
-
-from metodos.response_matrix.calc_aux_in import calc_inv_aux_in
-from metodos.response_matrix.calc_solution_dif import calc_sol_dif
-from metodos.response_matrix.calc_aux_em import calc_aux_em
-from metodos.response_matrix.calc_psi import calc_psi
-
-from metodos.common.calc_fi import calc_fi
 from metodos.common.init_variables import init_psiX, init_hj, init_C0j
+from metodos.common.trivial_sol_test import trivial_sol
+from metodos.common.calc_fi import calc_fi
 from metodos.common.calc_dr import calc_dr
 from metodos.common.calc_sigmaA import calc_sigmaA
 from metodos.common.calc_abs_rate import calc_abs_rate
 from metodos.common.calc_escape_rate import calc_escape_rate
-from metodos.common.trivial_sol_test import trivial_sol
+
+from metodos.SDM.calc_eigen import calc_eigen
+from metodos.SDM.calc_part_sol import calc_part_sol
+
+from metodos.Response_Matrix.calc_aux_em import calc_aux_em
+from metodos.Response_Matrix.calc_aux_in import calc_inv_aux_in
+from metodos.Response_Matrix.calc_psi import calc_psi
+from metodos.Response_Matrix.calc_psiM import calc_psiM
+from metodos.Response_Matrix.calc_solution_dif import calc_sol_dif
 
 
 def response_matrix(
-    sigmaT,
-    sigmaS0,
-    sigmaS1,
-    sigmaS2,
-    Qj,
-    NiSigmaF,
+    SIGMA_T,
+    SIGMA_S0,
+    SIGMA_S1,
+    SIGMA_S2,
+    Q,
+    NI_SIGMA_F,
     N,
-    cce,
-    ccd,
-    prec,
-    NN,
-    regs,
-    n_regs,
-    esp_R,
+    CCE,
+    CCD,
+    PREC,
+    NUM_NODES,
+    REGS,
+    NUM_REGS,
+    ESP_REGS,
 ):
-    # Coletando tempo inicial
-    initial_time = perf_counter()
+    # COLETANDO TEMPO INICIAL
+    INITIAL_TIME = perf_counter()
 
-    ###ETAPA INICIALIZANDO VARIÁVEIS
-    mi, w = quadratura(N)  # Mis e Omegas da quadratura
-    NNT = sum(NN)  # Número total de nodos
-    psiX = init_psiX(N, NNT, cce, ccd)  # Fluxos Angulares
-    hj = init_hj(NN, n_regs, esp_R)  # Espessura do nodo por região
-    C0j = init_C0j(sigmaT, sigmaS0)
-    psiM = np.zeros((NNT, N))
-    iteracao = 0
+    # INICIALIZANDO VARIÁVEIS
+    MI, W = quadratura(N)
+    TOTAL_NODES = sum(NUM_NODES)
+    psi = init_psiX(N, TOTAL_NODES, CCE, CCD)
+    H = init_hj(NUM_NODES, NUM_REGS, ESP_REGS)
+    C0 = init_C0j(SIGMA_T, SIGMA_S0)
+    psiM = zeros((TOTAL_NODES, N))
+    iteration = 0
 
-    if trivial_sol(Qj, cce, ccd, n_regs):
-        # Arredondando fi_final
-        initial_fi = np.zeros(NNT + 1)
+    if trivial_sol(Q, CCE, CCD, NUM_REGS):
+        initial_fi = zeros(TOTAL_NODES + 1)
 
-        # Arredondando psiX
-        abs_rate = np.zeros(n_regs)
-        escape_rate = np.zeros(2)
+        abs_rate = zeros(NUM_REGS)
+        escape_rate = zeros(2)
 
         # Coletando Tempo final
-        final_time = perf_counter()
+        FINAL_TIME = perf_counter()
 
         # Calculando tempo de execução
-        execution_time = abs(final_time - initial_time)
+        execution_time = abs(FINAL_TIME - INITIAL_TIME)
         return (
             initial_fi,
-            psiX,
-            iteracao,
+            psi,
+            iteration,
             abs_rate,
             escape_rate,
             execution_time,
         )  # Caso fontes e condições de contorno sejam nulas, o código retorna os fluxos completamente preenchidos de zeros
 
+    # CALCULANDO AUTOVALORES E AUTOVETORES
+    EIGEN_DICT = calc_eigen(N, REGS, MI, W, C0)
+
     while True:
-        iteracao += 1
-        ###ETAPA CÁLCULO DO FI INICIAL
-        initial_fi = calc_fi(N, NNT, w, psiX)
+        iteration += 1
 
-        # REALIZANDO O MESMO PROCESSO PARA CADA NODO
-        reg = regs[0] - 1
-        contador = 0
-        k = 0
-        for node in range(NNT):
-            if contador == NN[k]:
-                k += 1
-                reg = regs[k] - 1
-                contador = 0
+        # CÁLCULO DO FLUXO ESCALAR INICIAL
+        initial_fi = calc_fi(N, TOTAL_NODES, W, psi)
 
-            ###ETAPA CÁLCULO DE AUTOVALORES E AUTOVETORES
-            eigenvalues, eigenvectors = calc_eigen(N, reg, mi, w, C0j)
+        # INICIANDO PROCESSO ITERATIVO
+        node = 0
+        for index_reg, num_nodes in enumerate(NUM_NODES):
+            reg = REGS[index_reg] - 1
 
-            ###ETAPA CÁLCULO DA SOLUÇÃO PARTICULAR
-            part_sol = calc_part_sol(N, Qj, reg, sigmaT, sigmaS0, w)
+            # COLETANDO AUTOVALORES E AUTOVETORES
+            eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
+            eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
 
-            ###ETAPA CÁLCULO DA MATRIZ AUXILIAR DOS INCIDENTES INVERSA
-            inv_aux_in = calc_inv_aux_in(
-                N, hj, eigenvalues, eigenvectors, sigmaT, reg, k
-            )
+            for j in range(num_nodes):
+                # CALCULANDO A SOLUÇÃO PARTICULAR INTRANODAL
+                part_sol = calc_part_sol(N, Q, SIGMA_T, SIGMA_S0, W, reg)
 
-            ###ETAPA CÁLCULO DA MATRIZ AUXILIAR DOS EMERGENTES
-            aux_em = calc_aux_em(N, hj, eigenvalues, eigenvectors, sigmaT, reg, k)
+                # CALCULANDO A MATRIZ AUXILIAR DOS INCIDENTES INVERSA
+                inv_aux_in = calc_inv_aux_in(
+                    N, H, SIGMA_T, eigenvalues, eigenvectors, reg, index_reg
+                )
 
-            ###ETAPA CÁLCULO DA DIFERENÇA ENTRE INCIDENTE E PARTICULAR
-            sol_dif = calc_sol_dif(N, psiX, node, part_sol)
+                # CALCULANDO A MATRIZ AUXILIAR DOS EMERGENTES
+                aux_em = calc_aux_em(
+                    N, H, SIGMA_T, eigenvalues, eigenvectors, reg, index_reg
+                )
 
-            ###ETAPA ATUALIZANDO PSIS
-            psiX = calc_psi(N, node, psiX, aux_em, inv_aux_in, sol_dif, part_sol)
+                # CALCULANDO A DIFERENÇA ENTRE FLUXO ANGULAR INCIDENTE E SOLUÇÃO PARTICULAR
+                sol_dif = calc_sol_dif(N, psi, node, part_sol)
 
-            """ ###ETAPA ATUALIZANDO PSIS MÉDIOS
-            psiM = calc_psiM(
-                N,
-                hj,
-                alfa,
-                part_sol,
-                eigenvalues,
-                eigenvectors,
-                sigmaT,
-                node,
-                reg,
-                k,
-                psiM,
-            ) """
+                # ATUALIZANDO FLUXOS ANGULARES
+                psi = calc_psi(N, node, psi, aux_em, inv_aux_in, sol_dif, part_sol)
 
-            ###ETAPA CÁLCULO DO FI FINAL
-            final_fi = calc_fi(N, NNT, w, psiX)
+                # ATUALIZANDO FLUXOS ANGULARES MÉDIOS
+                psiM = calc_psiM(
+                    N,
+                    H,
+                    SIGMA_T,
+                    psiM,
+                    eigenvalues,
+                    eigenvectors,
+                    inv_aux_in,
+                    sol_dif,
+                    reg,
+                    index_reg,
+                    node,
+                    part_sol,
+                )
 
-            contador += 1
+                node += 1
 
-        if iteracao == 1 and n_regs == 1 and NNT == 1:
+        # CÁLCULO DO FLUXO ESCALAR FINAL
+        final_fi = calc_fi(N, TOTAL_NODES, W, psi)
+
+        # SDM CONVERGE EM UMA ITERAÇÃO NESSAS CONDIÇÕES
+        if iteration == 1 and NUM_REGS == 1 and TOTAL_NODES == 1:
             break
 
-        ###ETAPA CÁLCULO DO DR
+        # CÁLCULO DO DR
         dr = calc_dr(initial_fi, final_fi)
-        if dr < prec:
+        if dr < PREC:
             break
 
-    """ 
-    ###ETAPA TAXA DE ABSORÇÃO
+    # TAXA DE ABSORÇÃO
 
-    # Fi Medio
-    average_fi = 2 * calc_fi(N, NNT - 1, w, psiM)
+    # FLUXO ESCALAR MÉDIO
+    average_fi = 2 * calc_fi(N, TOTAL_NODES - 1, W, psiM)
 
-    # Gerando Sigma A
-    sigmaA = calc_sigmaA(sigmaT, sigmaS0)
+    # CALCULANDO SIGMA_A
+    SIGMA_A = calc_sigmaA(SIGMA_T, SIGMA_S0)
 
-    # Taxa de Absorção
-    abs_rate = calc_abs_rate(NN, regs, average_fi, hj, sigmaA)
-    """
+    # CALCULANDO TAXA DE ABSORÇÃO
+    abs_rate = calc_abs_rate(NUM_NODES, REGS, average_fi, H, SIGMA_A)
 
-    ###ETAPA TAXA DE FUGA
-    escape_rate = calc_escape_rate(N, psiX, mi, w)
+    # TAXA DE FUGA
+    escape_rate = calc_escape_rate(N, psi, MI, W)
 
-    # Coletando Tempo final
-    final_time = perf_counter()
+    # COLETANDO TEMPO FINAL
+    FINAL_TIME = perf_counter()
 
-    # Calculando tempo de execução
-    execution_time = abs(final_time - initial_time)
+    # CALCULANDO O TEMPO DE EXECUÇÃO
+    execution_time = abs(FINAL_TIME - INITIAL_TIME)
 
-    return final_fi, psiX, iteracao, escape_rate, execution_time
+    return final_fi, psi, iteration, abs_rate, escape_rate, execution_time
