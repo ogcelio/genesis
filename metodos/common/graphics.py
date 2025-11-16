@@ -50,6 +50,8 @@ def main_graphic(NN, esp_R, final_fi, regs, n_regs, method, open):
         color = "cyan"
     elif method == "MSD":
         color = "orchid"
+    elif method == "RM":
+        color = "orange"
     # Plotando o gráfico de linhas
     plt.plot(dominio, final_fi, color=color, zorder=2, label=method)
     # Plotando pontos dos fluxos escalares
@@ -130,24 +132,14 @@ def combo_chart(junto: bool):
                 color = "cyan"
             elif metodo == "MSD":
                 color = "orchid"
+            elif metodo == "RM":
+                color = "orange"
 
             ax = fig.add_subplot(linhas, colunas, i + 1)
-            ax.plot(dominio, final_fi, color=color, label=metodo, zorder=2)
+            ax.plot(dominio, final_fi, color="darkslategray", label=metodo, zorder=2)
+            ax.scatter(dominio, final_fi, color=color, zorder=3)
         else:
-            if metodo == "Diamond Difference":
-                ax.plot(dominio, final_fi, color="lime", label=metodo, zorder=2)
-            else:
-                ax.scatter(dominio, final_fi, color="red", label=metodo, zorder=3)
-
-        if metodo == "Diamond Difference":
-            ax.scatter(
-                dominio,
-                final_fi,
-                s=30,
-                color="darkslategray",
-                linewidth=0.5,
-                zorder=1,
-            )
+            ax.scatter(dominio, final_fi, label=metodo, zorder=3)
 
         plt.grid(True)
         plt.legend(loc="best")

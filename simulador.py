@@ -50,6 +50,7 @@ from metodos.dd_main import (
 )
 from metodos.sdm_main import sdm
 from metodos.msd_main import msd
+from metodos.rm_main import response_matrix
 from metodos.common.graphics import (
     main_graphic,
     heat_graphic,
@@ -195,10 +196,13 @@ class dashboard_simulador(QMainWindow):
         )  # Inicia o processo de cálculo do DD
         self.ui.actionMED.triggered.connect(
             lambda: self.iniciar_calculo(method="SDM")
-        )  # Inicia o processo de cálculo do MED
+        )  # Inicia o processo de cálculo do SDM
         self.ui.actionMED_Modificado.triggered.connect(
             lambda: self.iniciar_calculo(method="MSD")
-        )  # Inicia o processo de cálculo do MED Modificado
+        )  # Inicia o processo de cálculo do MSD
+        self.ui.actionResponse_Matrix.triggered.connect(
+            lambda: self.iniciar_calculo(method="RM")
+        )  # Inicia o processo de cálculo do Response Matrix
         self.ui.actionFisicos_Materiais_1G.triggered.connect(
             self.abrir_propriedades_1G
         )  # Abre as propriedades 1G
@@ -488,6 +492,25 @@ class dashboard_simulador(QMainWindow):
                 regioes,
                 n_regioes,
                 esp_R,
+            )
+        elif metodo_func == "RM":
+            fi_final, psiX, iteracao, taxa_absorcao, taxa_fuga, duracao = (
+                response_matrix(
+                    sigmaT,
+                    sigmaS0,
+                    sigmaS1,
+                    sigmaS2,
+                    Qj,
+                    NiSigmaF,
+                    N,
+                    cce,
+                    ccd,
+                    precisao,
+                    NN,
+                    regioes,
+                    n_regioes,
+                    esp_R,
+                )
             )
         # ---------------------------------------------
         method = metodo_func
