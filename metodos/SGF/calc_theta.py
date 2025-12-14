@@ -9,7 +9,7 @@ def calc_theta(
     REGS: list,
     eigenvalues: ndarray,
     eigenvectors: ndarray,
-):
+) -> dict:
     # CONSTANTES
     SIGMA_TH = SIGMA_T[node] * H[index_reg]
     INV_SIGMA_TH = 1 / SIGMA_TH
