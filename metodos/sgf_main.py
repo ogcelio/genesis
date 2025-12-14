@@ -15,6 +15,7 @@ from metodos.SDM.calc_eigen import calc_eigen
 from metodos.SDM.calc_part_sol import calc_part_sol
 
 from metodos.SGF.calc_theta import calc_theta
+from metodos.SGF.calc_source import calc_source
 
 
 def sgf(
@@ -74,6 +75,9 @@ def sgf(
     # CALCULANDO THETAS
     THETA_DICT = calc_theta(N, H, SIGMA_T, NUM_NODES, REGS, eigenvalues, eigenvectors)
 
+    # CALCULANDO FONTES
+    SOURCE_DICT = calc_source(N, TOTAL_NODES, PART_SOL_DICT, THETA_DICT)
+
     while True:
         iteration += 1
 
@@ -89,11 +93,14 @@ def sgf(
             eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
             eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
 
-            # COLETANDO THETA
-            theta = THETA_DICT[f"{node}"]
-
             # VARREDURA
             for j in range(num_nodes):
+                # COLETANDO THETA
+                theta = THETA_DICT[f"{node}"]
+
+                # COLETANDO SOURCE
+                source = SOURCE_DICT[f"{node}"]
+
                 node += 1
 
         # CÁLCULO DO FLUXO ESCALAR FINAL
