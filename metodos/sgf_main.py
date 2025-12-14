@@ -80,7 +80,7 @@ def sgf(
         # CÁLCULO DO FLUXO ESCALAR INICIAL
         initial_fi = calc_fi(N, TOTAL_NODES, W, psi)
 
-        # INICIANDO PROCESSO ITERATIVO
+        # INICIANDO PROCESSO ITERATIVO DE IDA
         node = 0
         for index_reg, num_nodes in enumerate(NUM_NODES):
             reg = REGS[index_reg] - 1
@@ -92,7 +92,7 @@ def sgf(
             # COLETANDO THETA
             theta = THETA_DICT[f"{node}"]
 
-            # IDA
+            # VARREDURA
             for j in range(num_nodes):
                 node += 1
 
