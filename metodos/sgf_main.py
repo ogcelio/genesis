@@ -73,10 +73,10 @@ def sgf(
     PART_SOL_DICT = calc_part_sol(N, Q, REGS, SIGMA_T, SIGMA_S0, W)
 
     # CALCULANDO THETAS
-    THETA_DICT = calc_theta(N, H, SIGMA_T, NUM_NODES, REGS, eigenvalues, eigenvectors)
+    THETA_DICT = calc_theta(N, H, SIGMA_T, REGS, EIGEN_DICT)
 
     # CALCULANDO FONTES
-    SOURCE_DICT = calc_source(N, TOTAL_NODES, PART_SOL_DICT, THETA_DICT)
+    SOURCE_DICT = calc_source(N, REGS, PART_SOL_DICT, THETA_DICT)
 
     while True:
         iteration += 1
