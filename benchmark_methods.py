@@ -1,10 +1,9 @@
 import json
-from metodos.med_main import med
-from metodos.med_mod_main import med_mod
 from metodos.dd_main import diamond_difference
 from metodos.rm_main import response_matrix
 from metodos.sdm_main import sdm
 from metodos.msd_main import msd
+from metodos.sgf_main import sgf
 import numpy as np
 from time import perf_counter
 
@@ -36,54 +35,20 @@ for i in range(len(sigmaT)):
     Qj[i] = float(Qj[i])
     NiSigmaF[i] = float(NiSigmaF[i])
 
-sum_initial = []
-for i in range(1000):
-    final_fi, psi, iteration, abs_rate, escape_rate, execution_time = med_mod(
-        sigmaT,
-        sigmaS0,
-        sigmaS1,
-        sigmaS2,
-        Qj,
-        NiSigmaF,
-        N,
-        cce,
-        ccd,
-        prec,
-        NN,
-        regs,
-        n_regs,
-        esp_R,
-    )
-    sum_initial.append(execution_time)
-
-initial = sum(sum_initial) / 1000
-print(initial)
-
-print(50 * "-")
-
-sum_final = []
-for i in range(1000):
-    final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
-        sigmaT,
-        sigmaS0,
-        sigmaS1,
-        sigmaS2,
-        Qj,
-        NiSigmaF,
-        N,
-        cce,
-        ccd,
-        prec,
-        NN,
-        regs,
-        n_regs,
-        esp_R,
-    )
-    sum_final.append(execution_time)
-
-final = sum(sum_final) / 1000
-print(final)
-
-print(50 * "-")
-
-print((abs(final - initial) / initial) * 100)
+final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
+    sigmaT,
+    sigmaS0,
+    sigmaS1,
+    sigmaS2,
+    Qj,
+    NiSigmaF,
+    N,
+    cce,
+    ccd,
+    prec,
+    NN,
+    regs,
+    n_regs,
+    esp_R,
+)
+print(final_fi)
