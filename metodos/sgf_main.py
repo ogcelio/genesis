@@ -1,21 +1,21 @@
 from time import perf_counter
+
 from numpy import zeros
 
-from metodos.quadratura.quadratura_backend import quadratura
-
-from metodos.common.init_variables import init_psiX, init_hj, init_C0j
-from metodos.common.trivial_sol_test import trivial_sol
-from metodos.common.calc_fi import calc_fi
-from metodos.common.calc_dr import calc_dr
-from metodos.common.calc_sigmaA import calc_sigmaA
 from metodos.common.calc_abs_rate import calc_abs_rate
+from metodos.common.calc_dr import calc_dr
 from metodos.common.calc_escape_rate import calc_escape_rate
-
+from metodos.common.calc_fi import calc_fi
+from metodos.common.calc_sigmaA import calc_sigmaA
+from metodos.common.init_variables import init_C0j, init_hj, init_psiX
+from metodos.common.trivial_sol_test import trivial_sol
+from metodos.quadratura.quadratura_backend import quadratura
 from metodos.SDM.calc_eigen import calc_eigen
 from metodos.SDM.calc_part_sol import calc_part_sol
-
-from metodos.SGF.calc_theta import calc_theta
+from metodos.SGF.calc_psi import backward, foward
 from metodos.SGF.calc_source import calc_source
+from metodos.SGF.calc_sweep_matrices import calc_sweep_matrices
+from metodos.SGF.calc_theta import calc_theta
 
 
 def sgf(
@@ -78,6 +78,11 @@ def sgf(
     # CALCULANDO FONTES
     SOURCE_DICT = calc_source(N, REGS, PART_SOL_DICT, THETA_DICT)
 
+    # CALCULANDO MATRIZES GP, GM, K
+    GP_DICT, GM_DICT, K_DICT = calc_sweep_matrices(
+        N, H, Q, MI, W, REGS, SIGMA_T, SIGMA_S0, THETA_DICT, SOURCE_DICT
+    )
+
     while True:
         iteration += 1
 
@@ -85,23 +90,26 @@ def sgf(
         initial_fi = calc_fi(N, TOTAL_NODES, W, psi)
 
         # INICIANDO PROCESSO ITERATIVO DE IDA
-        node = 0
+        node = 1
         for index_reg, num_nodes in enumerate(NUM_NODES):
-            reg = REGS[index_reg] - 1
+            gp = GP_DICT[f"{index_reg}"]
+            gm = GM_DICT[f"{index_reg}"]
+            k = K_DICT[f"{index_reg}"]
 
-            # COLETANDO AUTOVALORES E AUTOVETORES
-            eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
-            eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
-
-            # VARREDURA
             for j in range(num_nodes):
-                # COLETANDO THETA
-                theta = THETA_DICT[f"{node}"]
-
-                # COLETANDO SOURCE
-                source = SOURCE_DICT[f"{node}"]
-
+                foward(N, gp, gm, k, psi, node)
                 node += 1
+
+        # INICIANDO PROCESSO ITERATIVO DE VOLTA
+        node = TOTAL_NODES - 1
+        for index_reg, num_nodes in reversed(tuple(enumerate(NUM_NODES))):
+            gp = GP_DICT[f"{index_reg}"]
+            gm = GM_DICT[f"{index_reg}"]
+            k = K_DICT[f"{index_reg}"]
+
+            for j in range(num_nodes):
+                backward(N, gp, gm, k, psi, node)
+                node -= 1
 
         # CÁLCULO DO FLUXO ESCALAR FINAL
         final_fi = calc_fi(N, TOTAL_NODES, W, psi)
