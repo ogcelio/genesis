@@ -1,20 +1,19 @@
-import numpy as np
 from time import perf_counter
 
-from metodos.quadratura.quadratura_backend import quadratura
+import numpy as np
 
-from metodos.Diamond_Difference.calc_psiM import calc_psiM
-from metodos.Diamond_Difference.calc_foward import foward
-from metodos.Diamond_Difference.calc_backward import backward
-from metodos.Diamond_Difference.calc_ss import calc_ss
-
-from metodos.common.calc_fi import calc_fi
-from metodos.common.init_variables import init_psiX, init_hj
-from metodos.common.calc_dr import calc_dr
-from metodos.common.calc_sigmaA import calc_sigmaA
 from metodos.common.calc_abs_rate import calc_abs_rate
+from metodos.common.calc_dr import calc_dr
 from metodos.common.calc_escape_rate import calc_escape_rate
+from metodos.common.calc_fi import calc_fi
+from metodos.common.calc_sigmaA import calc_sigmaA
+from metodos.common.init_variables import init_hj, init_psiX
 from metodos.common.trivial_sol_test import trivial_sol
+from metodos.Diamond_Difference.calc_backward import backward
+from metodos.Diamond_Difference.calc_foward import foward
+from metodos.Diamond_Difference.calc_psiM import calc_psiM
+from metodos.Diamond_Difference.calc_ss import calc_ss
+from metodos.quadratura.quadratura_backend import quadratura
 
 
 def diamond_difference(
@@ -45,7 +44,7 @@ def diamond_difference(
 
     iteration = 0
 
-    if trivial_sol(Q, CCE, CCD, NUM_REGS):
+    if trivial_sol(Q, CCE, CCD):
         # Arredondando fi_final
         initial_fi = np.zeros(NNT + 1)
 

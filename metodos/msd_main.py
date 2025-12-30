@@ -1,23 +1,21 @@
 from time import perf_counter
+
 from numpy import zeros
 
-from metodos.quadratura.quadratura_backend import quadratura
-
-from metodos.common.init_variables import init_psiX, init_hj, init_C0j
-from metodos.common.trivial_sol_test import trivial_sol
-from metodos.common.calc_fi import calc_fi
-from metodos.common.calc_dr import calc_dr
-from metodos.common.calc_sigmaA import calc_sigmaA
 from metodos.common.calc_abs_rate import calc_abs_rate
+from metodos.common.calc_dr import calc_dr
 from metodos.common.calc_escape_rate import calc_escape_rate
-
+from metodos.common.calc_fi import calc_fi
+from metodos.common.calc_sigmaA import calc_sigmaA
+from metodos.common.init_variables import init_C0j, init_hj, init_psiX
+from metodos.common.trivial_sol_test import trivial_sol
+from metodos.MSD.calc_psi import calc_psi
+from metodos.MSD.calc_ss import calc_ss
+from metodos.quadratura.quadratura_backend import quadratura
+from metodos.SDM.calc_alfa import calc_alfa
 from metodos.SDM.calc_eigen import calc_eigen
 from metodos.SDM.calc_part_sol import calc_part_sol
-from metodos.SDM.calc_alfa import calc_alfa
 from metodos.SDM.calc_psiM import calc_psiM
-
-from metodos.MSD.calc_ss import calc_ss
-from metodos.MSD.calc_psi import calc_psi
 
 
 def msd(
@@ -48,7 +46,7 @@ def msd(
     psiM = zeros((TOTAL_NODES, N))
     iteration = 0
 
-    if trivial_sol(Q, CCE, CCD, NUM_REGS):
+    if trivial_sol(Q, CCE, CCD):
         initial_fi = zeros(TOTAL_NODES + 1)
 
         abs_rate = zeros(NUM_REGS)
