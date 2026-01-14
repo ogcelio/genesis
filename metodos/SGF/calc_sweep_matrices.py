@@ -36,7 +36,7 @@ def calc_sweep_matrices(
         soma_F = 0
         for i in range(N):
             soma_F += W[i] * source[i]
-        soma_F *= SIGMA_S0[index_reg] / 2
+        soma_F *= SIGMA_S0[reg_num] / 2
 
         for i in range(HALF_N):
             # PREENCHENDO AS MATRIZES, EXCETO PARAMETROS ESPECIFICOS DA DIAGONAL PRINCIPAL
@@ -46,8 +46,8 @@ def calc_sweep_matrices(
                 for k in range(N):
                     soma_C += theta[k][j] * W[k]
                     soma_D += theta[k][j + HALF_N] * W[k]
-                C[i][j] = soma_C
-                D[i][j] = soma_D
+                C[i][j] = (SIGMA_S0[reg_num] * 0.5) * soma_C
+                D[i][j] = (SIGMA_S0[reg_num] * 0.5) * soma_D
 
             # SOMANDO PARAMETROS ESPECIFICOS DA DIAGONAL PRINCIPAL
             C[i][i] += MI[i] / H[index_reg]

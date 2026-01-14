@@ -1,12 +1,13 @@
 import json
-from metodos.dd_main import diamond_difference
-from metodos.rm_main import response_matrix
-from metodos.sdm_main import sdm
-from metodos.msd_main import msd
-from metodos.sgf_main import sgf
-import numpy as np
 from time import perf_counter
 
+import numpy as np
+
+from metodos.dd_main import diamond_difference
+from metodos.msd_main import msd
+from metodos.rm_main import response_matrix
+from metodos.sdm_main import sdm
+from metodos.sgf_main import sgf
 
 N = 4
 cce = 1
@@ -36,6 +37,26 @@ for i in range(len(sigmaT)):
     NiSigmaF[i] = float(NiSigmaF[i])
 
 final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
+    sigmaT,
+    sigmaS0,
+    sigmaS1,
+    sigmaS2,
+    Qj,
+    NiSigmaF,
+    N,
+    cce,
+    ccd,
+    prec,
+    NN,
+    regs,
+    n_regs,
+    esp_R,
+)
+print(final_fi)
+
+print(50 * "-")
+
+final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
     sigmaT,
     sigmaS0,
     sigmaS1,
