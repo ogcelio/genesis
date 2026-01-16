@@ -1,4 +1,4 @@
-from numpy import ndarray, exp, zeros
+from numpy import exp, ndarray, zeros
 from numpy.linalg import inv
 
 
@@ -9,6 +9,9 @@ def calc_theta(
     REGS: list,
     EIGEN_DICT: dict,
 ) -> dict:
+    # CONSTANTES
+    HALF_N = N // 2
+
     # CRIANDO A MATRIZ DE THETAS
     theta_matrix = zeros((N, N))
 
@@ -36,42 +39,40 @@ def calc_theta(
         # MONTANDO OS VETORES THETAS
         for m in range(N):
             # MONTANDO A MATRIZ A
-            for i in range(N // 2):
-                for j in range(N // 2):
-                    # PRIMEIRO QUADRANTE
-                    A[i][j] = eigenvectors[j][i]
 
-                    # SEGUNDO QUADRANTE
-                    A[i][j + N // 2] = eigenvectors[j + N // 2][i] * exp(
-                        (-SIGMA_TH) / eigenvalues[j]
-                    )
+            # PRIMEIRAS METADE DAS COLUNAS
+            for i in range(N):
+                for j in range(HALF_N):
+                    if eigenvalues[i] > 0:
+                        A[i][j] = eigenvectors[j][i]
+                    else:
+                        A[i][j] = eigenvectors[j][i] * exp(SIGMA_TH / eigenvalues[i])
 
-                    # TERCEIRO QUADRANTE
-                    A[i + N // 2][j] = eigenvectors[j][i + N // 2] * exp(
-                        SIGMA_TH / eigenvalues[j + N // 2]
-                    )
-
-                    # QUARTO QUADRANTE
-                    A[i + N // 2][j + N // 2] = eigenvectors[j + N // 2][i + N // 2]
+            # SEGUNDA METADE DAS COLUNAS
+            for i in range(N):
+                for j in range(HALF_N, N):
+                    if eigenvalues[i] < 0:
+                        A[i][j] = eigenvectors[j][i]
+                    else:
+                        A[i][j] = eigenvectors[j][i] * exp((-SIGMA_TH) / eigenvalues[i])
 
             # MONTANDO O VETOR E
-            for i in range(N // 2):
-                # PRIMEIRA METADE
-                E[i] = (
-                    eigenvalues[i]
-                    * eigenvectors[m][i]
-                    * (1 - exp((-SIGMA_TH) / eigenvalues[i]))
-                )
+            for i in range(N):
+                if eigenvalues[i] > 0:
+                    E[i] = (
+                        eigenvalues[i]
+                        * eigenvectors[m][i]
+                        * (1 - exp((-SIGMA_TH) / eigenvalues[i]))
+                    )
+                else:
+                    E[i] = (
+                        eigenvalues[i]
+                        * eigenvectors[m][i]
+                        * (exp(SIGMA_TH / eigenvalues[i]) - 1)
+                    )
 
-                # SEGUNDA METADE
-                E[i + N // 2] = (
-                    eigenvalues[i + N // 2]
-                    * eigenvectors[m][i + N // 2]
-                    * (exp(SIGMA_TH / eigenvalues[i + N // 2]))
-                )
-
-            # MONTANDO LINHA DA MATRIZ THETA:
-            theta_vector = INV_SIGMA_TH * (inv(A) @ E)
+            # MONTANDO COLUNA DA MATRIZ THETA:
+            theta_vector = (INV_SIGMA_TH * inv(A)) @ E
 
             for n in range(N):
                 theta_matrix[m][n] = theta_vector[n]

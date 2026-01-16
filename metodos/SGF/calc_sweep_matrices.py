@@ -36,24 +36,27 @@ def calc_sweep_matrices(
         soma_F = 0
         for i in range(N):
             soma_F += W[i] * source[i]
-        soma_F *= SIGMA_S0[reg_num] / 2
+        soma_F *= SIGMA_S0[reg_num] * 0.5
 
-        for i in range(HALF_N):
+        for l in range(HALF_N):
             # PREENCHENDO AS MATRIZES, EXCETO PARAMETROS ESPECIFICOS DA DIAGONAL PRINCIPAL
-            for j in range(HALF_N):
-                soma_C = -theta[i][j] * SIGMA_T[reg_num]
-                soma_D = -theta[i][j + HALF_N] * SIGMA_T[reg_num]
-                for k in range(N):
-                    soma_C += theta[k][j] * W[k]
-                    soma_D += theta[k][j + HALF_N] * W[k]
-                C[i][j] = (SIGMA_S0[reg_num] * 0.5) * soma_C
-                D[i][j] = (SIGMA_S0[reg_num] * 0.5) * soma_D
+            for c in range(HALF_N):
+                soma_C = 0
+                soma_D = 0
+                for n in range(N):
+                    soma_C += theta[n][c] * W[n]
+                    soma_D += theta[n][c + HALF_N] * W[n]
+                soma_C *= SIGMA_S0[reg_num] * 0.5
+                soma_D *= SIGMA_S0[reg_num] * 0.5
+
+                C[l][c] = soma_C - (theta[l][c] * SIGMA_T[reg_num])
+                D[l][c] = soma_D - (theta[l][c + HALF_N] * SIGMA_T[reg_num])
 
             # SOMANDO PARAMETROS ESPECIFICOS DA DIAGONAL PRINCIPAL
-            C[i][i] += MI[i] / H[index_reg]
-            A[i][i] = MI[i] / H[index_reg]
+            C[l][l] += MI[l] / H[index_reg]
+            A[l][l] = MI[l] / H[index_reg]
 
-            F[i] = soma_F - SIGMA_T[i] * source[i] + Q[index_reg]
+            F[l] = soma_F - (SIGMA_T[reg_num] * source[l]) + Q[reg_num]
 
         inv_a = inv(A)
         GP_DICT.update({f"{index_reg}": inv_a @ C})

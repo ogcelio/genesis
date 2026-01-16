@@ -114,7 +114,7 @@ def sgf(
         # CÁLCULO DO FLUXO ESCALAR FINAL
         final_fi = calc_fi(N, TOTAL_NODES, W, psi)
 
-        # SDM CONVERGE EM UMA ITERAÇÃO NESSAS CONDIÇÕES
+        # SGF CONVERGE EM UMA ITERAÇÃO NESSAS CONDIÇÕES
         if iteration == 1 and NUM_REGS == 1 and TOTAL_NODES == 1:
             break
 

@@ -10,8 +10,9 @@ def calc_source(N: int, REGS: list, PART_SOL_DICT: dict, THETA_DICT: dict) -> di
 
     # MONTANDO A MATRIZ DE FONTES
     for index_reg, reg in enumerate(REGS):
+        reg_num = reg - 1
         # COLETANDO SOLUÇÃO PARTICULAR
-        part_sol = PART_SOL_DICT[f"{index_reg}"]
+        part_sol = PART_SOL_DICT[f"{reg_num}"]
 
         # COLETANDO THETA
         theta = THETA_DICT[f"{index_reg}"]
