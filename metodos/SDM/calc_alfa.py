@@ -1,4 +1,4 @@
-from numpy import zeros, exp, ndarray
+from numpy import exp, ndarray, zeros
 from numpy.linalg import inv
 
 
