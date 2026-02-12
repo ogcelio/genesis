@@ -5,11 +5,11 @@ def calc_source(N: int, REGS: list, PART_SOL_DICT: dict, THETA_DICT: dict) -> di
     # CRIANDO O DICT DE FONTES
     source = dict()
 
-    # CRIANDO O VETOR DE FONTE EM UM NODO
-    source_vector = zeros(N)
-
     # MONTANDO A MATRIZ DE FONTES
     for index_reg, reg in enumerate(REGS):
+        # CRIANDO O VETOR DE FONTE EM UM NODO
+        source_vector = zeros(N)
+
         reg_num = reg - 1
         # COLETANDO SOLUÇÃO PARTICULAR
         part_sol = PART_SOL_DICT[f"{reg_num}"]

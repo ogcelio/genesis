@@ -22,13 +22,13 @@ def calc_sweep_matrices(
     GM_DICT = dict()  # G MINUS
     K_DICT = dict()
 
-    # DECLARANDO MATRIZES A, C, D e S
-    A: ndarray = identity(HALF_N)
-    C: ndarray = zeros((HALF_N, HALF_N))
-    D: ndarray = zeros((HALF_N, HALF_N))
-    F: ndarray = zeros(HALF_N)
-
     for index_reg, reg in enumerate(REGS):
+        # DECLARANDO MATRIZES A, C, D e S
+        A: ndarray = identity(HALF_N)
+        C: ndarray = zeros((HALF_N, HALF_N))
+        D: ndarray = zeros((HALF_N, HALF_N))
+        F: ndarray = zeros(HALF_N)
+
         reg_num = reg - 1
         theta = THETA_DICT[f"{index_reg}"]
         source = SOURCE_DICT[f"{index_reg}"]
