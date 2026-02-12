@@ -52,6 +52,7 @@ final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
     n_regs,
     esp_R,
 )
+print("SGF:")
 print(final_fi)
 
 print(50 * "-")
@@ -72,4 +73,5 @@ final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
     n_regs,
     esp_R,
 )
+print("MSD:")
 print(final_fi)
