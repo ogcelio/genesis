@@ -46,7 +46,7 @@ def msd(
     psiM = zeros((TOTAL_NODES, N))
     iteration = 0
 
-    if trivial_sol(Q, CCE, CCD, NUM_REGS):
+    if trivial_sol(Q, CCE, CCD):
         initial_fi = zeros(TOTAL_NODES + 1)
 
         abs_rate = zeros(NUM_REGS)

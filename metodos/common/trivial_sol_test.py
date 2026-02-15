@@ -1,10 +1,11 @@
-def trivial_sol(Qj, cce, ccd, n_regs):
-    is_all_0 = True
-    for i in range(0, n_regs):
-        if Qj[i] != 0.0:
-            is_all_0 = False  # Teste para saber se todas as fontes são 0
-            break
+from numpy import ndarray
 
-    if ccd == 0.0 and cce == 0.0 and is_all_0 == True:
-        return True
+
+def trivial_sol(Q: list[float] | ndarray, CCE: float, CCD: float) -> bool:
+    for source in Q:  # testando se todas as fontes são 0
+        if source != 0:
+            break
+    else:  # se todas as fontes forem 0:
+        if CCE == 0 and CCD == 0:
+            return True
     return False
