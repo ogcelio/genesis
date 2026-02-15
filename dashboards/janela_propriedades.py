@@ -1,19 +1,20 @@
-import sys
 import json
+import sys
 from platform import system
+
 from PySide6.QtWidgets import (
     QApplication,
+    QCheckBox,
+    QGridLayout,
+    QInputDialog,
     QMainWindow,
+    QMessageBox,
+    QPushButton,
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
-    QWidget,
     QVBoxLayout,
-    QPushButton,
-    QGridLayout,
-    QMessageBox,
-    QInputDialog,
-    QCheckBox,
+    QWidget,
 )
 
 if system() == "Windows":
@@ -25,7 +26,14 @@ else:
     cache_reator = "dados/cache_reator.txt"
     config_path = "config.json"
 
-termos = ("Sigma T", "Sigma S0", "Sigma S1", "Sigma S2", "Fonte", "Ni*Sigma F")
+termos = (
+    "\u03a3T [cm\u207b\u00b9]",
+    "\u03a3S0 [cm\u207b\u00b9]",
+    "\u03a3S1 [cm\u207b\u00b9]",
+    "\u03a3S2 [cm\u207b\u00b9]",
+    "Fonte [#/(cm\u00b3\u00b7s)]",
+    "\U0001d708\u00b7\u03a3F",
+)
 
 
 class propriedades(QMainWindow):
@@ -61,46 +69,46 @@ class propriedades(QMainWindow):
         )
 
         self.setWindowTitle("Propriedades - 1 Grupo")
-        self.setGeometry(0, 0, 705, 466)
+        self.setGeometry(0, 0, 1009, 471)
 
         # Criação do QTabWidget
         self.tabela_reatores = QTabWidget()
         self.setCentralWidget(self.tabela_reatores)
 
         # Criando Cadastrar e remover Reator
-        self.cadastrar_reator = QPushButton("CADASTRAR CONJUNTO")
+        self.cadastrar_reator = QPushButton("CADASTRAR")
         self.cadastrar_reator.setMinimumHeight(30)
         self.cadastrar_reator.setStyleSheet(
             """
             font-size: 11pt; /* Tamanho da fonte dos cabeçalhos */
-            font-weight: bold; /* Negrito nos cabeçalhos */                            
+            font-weight: bold; /* Negrito nos cabeçalhos */
             """
         )
 
-        self.remover_reator = QPushButton("REMOVER CONJUNTO")
+        self.remover_reator = QPushButton("REMOVER")
         self.remover_reator.setMinimumHeight(30)
         self.remover_reator.setStyleSheet(
             """
             font-size: 11pt; /* Tamanho da fonte dos cabeçalhos */
-            font-weight: bold; /* Negrito nos cabeçalhos */                            
+            font-weight: bold; /* Negrito nos cabeçalhos */
             """
         )
 
-        self.atualizar_reator = QPushButton("ATUALIZAR CONJUNTO")
+        self.atualizar_reator = QPushButton("ATUALIZAR")
         self.atualizar_reator.setMinimumHeight(30)
         self.atualizar_reator.setStyleSheet(
             """
             font-size: 11pt; /* Tamanho da fonte dos cabeçalhos */
-            font-weight: bold; /* Negrito nos cabeçalhos */                            
+            font-weight: bold; /* Negrito nos cabeçalhos */
             """
         )
 
-        self.selecionar_reator = QPushButton("SELECIONAR CONJUNTO")
+        self.selecionar_reator = QPushButton("SELECIONAR")
         self.selecionar_reator.setMinimumHeight(30)
         self.selecionar_reator.setStyleSheet(
             """
             font-size: 11pt; /* Tamanho da fonte dos cabeçalhos */
-            font-weight: bold; /* Negrito nos cabeçalhos */                            
+            font-weight: bold; /* Negrito nos cabeçalhos */
             """
         )
 
@@ -139,7 +147,7 @@ class propriedades(QMainWindow):
                     font-size: 11pt; /* Altera o tamanho da fonte para toda a tabela */
                 }
                 QHeaderView::section {
-                    font-size: 10pt; /* Tamanho da fonte dos cabeçalhos */
+                    font-size: 12pt; /* Tamanho da fonte dos cabeçalhos */
                     font-weight: bold; /* Negrito nos cabeçalhos */
                 }
                 """
@@ -147,9 +155,13 @@ class propriedades(QMainWindow):
             tabela.setRowCount(len(propriedades["Sigma T"]))
             tabela.setColumnCount(len(propriedades))
 
+            # Definindo a largura das colunas
+            for i in range(len(termos)):
+                tabela.setColumnWidth(i, 150)
+
             # Adicionando nome das zonas
             for i in range(len(propriedades["Sigma T"])):
-                titulo = QTableWidgetItem(f"Zona {i+1}")
+                titulo = QTableWidgetItem(f"Zona {i + 1}")
                 tabela.setVerticalHeaderItem(i, titulo)
 
             # Adicionado tipos dos dados
@@ -226,7 +238,7 @@ class propriedades(QMainWindow):
 
                     # Adicionando nome das zonas
                     for i in range(qtd_zonas):
-                        titulo = QTableWidgetItem(f"Zona {i+1}")
+                        titulo = QTableWidgetItem(f"Zona {i + 1}")
                         tabela.setVerticalHeaderItem(i, titulo)
 
                     # Adicionado tipos dos dados
