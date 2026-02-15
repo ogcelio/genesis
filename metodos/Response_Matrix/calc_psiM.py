@@ -1,4 +1,4 @@
-from numpy import exp, zeros, ndarray
+from numpy import exp, ndarray, zeros
 
 
 def calc_psiM(
