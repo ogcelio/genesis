@@ -36,7 +36,7 @@ for i in range(len(sigmaT)):
     Qj[i] = float(Qj[i])
     NiSigmaF[i] = float(NiSigmaF[i])
 
-final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
+final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
     sigmaT,
     sigmaS0,
     sigmaS1,
@@ -57,7 +57,7 @@ print(final_fi)
 
 print(50 * "-")
 
-final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
+final_fi, psi, iteration, abs_rate, escape_rate, execution_time = diamond_difference(
     sigmaT,
     sigmaS0,
     sigmaS1,
