@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dashboard_simuladorAagXQL.ui'
+## Form generated from reading UI file 'dashboard_simuladorlaFrtL.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.2
 ##
@@ -18,9 +18,9 @@ from PySide6.QtCore import (
     QPoint,
     QRect,
     QSize,
+    Qt,
     QTime,
     QUrl,
-    Qt,
 )
 from PySide6.QtGui import (
     QAction,
@@ -71,8 +71,8 @@ class Ui_MainWindow(object):
         self.actionSair.setObjectName("actionSair")
         self.actionM_todos_2_Grupo = QAction(MainWindow)
         self.actionM_todos_2_Grupo.setObjectName("actionM_todos_2_Grupo")
-        self.actionDiamond_Difference_DD = QAction(MainWindow)
-        self.actionDiamond_Difference_DD.setObjectName("actionDiamond_Difference_DD")
+        self.actionDD = QAction(MainWindow)
+        self.actionDD.setObjectName("actionDD")
         self.actionDegrau_Caracter_stico = QAction(MainWindow)
         self.actionDegrau_Caracter_stico.setObjectName("actionDegrau_Caracter_stico")
         self.actionSpectral_Green_s_Function = QAction(MainWindow)
@@ -91,12 +91,10 @@ class Ui_MainWindow(object):
         self.actionFisicos_Materiais_2G.setObjectName("actionFisicos_Materiais_2G")
         self.actionAjuda = QAction(MainWindow)
         self.actionAjuda.setObjectName("actionAjuda")
-        self.actionMED = QAction(MainWindow)
-        self.actionMED.setObjectName("actionMED")
-        self.actionMED_Modificado = QAction(MainWindow)
-        self.actionMED_Modificado.setObjectName("actionMED_Modificado")
-        self.actionResponse_Matrix = QAction(MainWindow)
-        self.actionResponse_Matrix.setObjectName("actionResponse_Matrix")
+        self.actionSDM = QAction(MainWindow)
+        self.actionSDM.setObjectName("actionSDM")
+        self.actionMSD = QAction(MainWindow)
+        self.actionMSD.setObjectName("actionMSD")
         self.actionRelatorio = QAction(MainWindow)
         self.actionRelatorio.setObjectName("actionRelatorio")
         self.actionMesclarMetodos = QAction(MainWindow)
@@ -105,6 +103,10 @@ class Ui_MainWindow(object):
         self.actionMostrarGraficos.setObjectName("actionMostrarGraficos")
         self.actionLimpar = QAction(MainWindow)
         self.actionLimpar.setObjectName("actionLimpar")
+        self.actionSGF = QAction(MainWindow)
+        self.actionSGF.setObjectName("actionSGF")
+        self.actionRM = QAction(MainWindow)
+        self.actionRM.setObjectName("actionRM")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_7 = QGroupBox(self.centralwidget)
@@ -134,16 +136,14 @@ class Ui_MainWindow(object):
         self.nodos_esp_zona = QTableWidget(self.groupBox_7)
         if self.nodos_esp_zona.columnCount() < 1:
             self.nodos_esp_zona.setColumnCount(1)
-        __qtablewidgetitem = QTableWidgetItem()
-        self.nodos_esp_zona.setHorizontalHeaderItem(0, __qtablewidgetitem)
         if self.nodos_esp_zona.rowCount() < 3:
             self.nodos_esp_zona.setRowCount(3)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.nodos_esp_zona.setVerticalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
-        self.nodos_esp_zona.setVerticalHeaderItem(0, __qtablewidgetitem1)
+        self.nodos_esp_zona.setVerticalHeaderItem(1, __qtablewidgetitem1)
         __qtablewidgetitem2 = QTableWidgetItem()
-        self.nodos_esp_zona.setVerticalHeaderItem(1, __qtablewidgetitem2)
-        __qtablewidgetitem3 = QTableWidgetItem()
-        self.nodos_esp_zona.setVerticalHeaderItem(2, __qtablewidgetitem3)
+        self.nodos_esp_zona.setVerticalHeaderItem(2, __qtablewidgetitem2)
         self.nodos_esp_zona.setObjectName("nodos_esp_zona")
         self.nodos_esp_zona.setGeometry(QRect(30, 130, 601, 131))
         sizePolicy = QSizePolicy(
@@ -160,7 +160,7 @@ class Ui_MainWindow(object):
         self.nodos_esp_zona.setBaseSize(QSize(0, 0))
         self.nodos_esp_zona.setTabletTracking(False)
         self.nodos_esp_zona.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n" 'font: 8pt "Roboto";'
+            'background-color: rgb(255, 255, 255);\nfont: 8pt "Roboto";'
         )
         self.nodos_esp_zona.setIconSize(QSize(0, 0))
         self.grafico_espessura = QGraphicsView(self.groupBox_7)
@@ -171,9 +171,7 @@ class Ui_MainWindow(object):
         self.espessura_total.setObjectName("espessura_total")
         self.espessura_total.setGeometry(QRect(550, 270, 41, 20))
         self.espessura_total.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n"
-            'font: 9pt "Roboto";\n'
-            "color: black;"
+            'background-color: rgb(255, 255, 255);\nfont: 9pt "Roboto";\ncolor: black;'
         )
         self.label_22 = QLabel(self.groupBox_7)
         self.label_22.setObjectName("label_22")
@@ -184,38 +182,34 @@ class Ui_MainWindow(object):
         font1.setBold(False)
         font1.setItalic(False)
         self.label_22.setFont(font1)
-        self.label_22.setStyleSheet("color: white;\n" 'font: 10pt "Roboto";')
+        self.label_22.setStyleSheet('color: white;\nfont: 10pt "Roboto";')
         self.groupBox_8 = QGroupBox(self.groupBox_7)
         self.groupBox_8.setObjectName("groupBox_8")
-        self.groupBox_8.setGeometry(QRect(200, 30, 271, 91))
+        self.groupBox_8.setGeometry(QRect(140, 30, 381, 91))
         self.groupBox_8.setStyleSheet("")
         self.label_4 = QLabel(self.groupBox_8)
         self.label_4.setObjectName("label_4")
-        self.label_4.setGeometry(QRect(10, 13, 71, 41))
-        self.label_4.setStyleSheet('font: 700 8pt "Roboto";\n' "color: white;")
+        self.label_4.setGeometry(QRect(20, 20, 71, 41))
+        self.label_4.setStyleSheet('font: 700 8pt "Roboto";\ncolor: white;')
         self.label_5 = QLabel(self.groupBox_8)
         self.label_5.setObjectName("label_5")
-        self.label_5.setGeometry(QRect(190, 20, 71, 31))
-        self.label_5.setStyleSheet('font:  700 9pt "Roboto";\n' "color: white;")
+        self.label_5.setGeometry(QRect(220, 20, 151, 41))
+        self.label_5.setStyleSheet('font:  700 9pt "Roboto";\ncolor: white;')
         self.n_regioes = QLineEdit(self.groupBox_8)
         self.n_regioes.setObjectName("n_regioes")
-        self.n_regioes.setGeometry(QRect(20, 60, 51, 20))
+        self.n_regioes.setGeometry(QRect(30, 60, 51, 20))
         self.n_regioes.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n"
-            'font: 8pt "Roboto";\n'
-            "color: black;"
+            'background-color: rgb(255, 255, 255);\nfont: 8pt "Roboto";\ncolor: black;'
         )
         self.ok_regioes = QPushButton(self.groupBox_8)
         self.ok_regioes.setObjectName("ok_regioes")
-        self.ok_regioes.setGeometry(QRect(90, 30, 41, 23))
-        self.ok_regioes.setStyleSheet('font: 8pt "Roboto";\n' "color: white;")
+        self.ok_regioes.setGeometry(QRect(110, 30, 41, 23))
+        self.ok_regioes.setStyleSheet('font: 8pt "Roboto";\ncolor: white;')
         self.ordem_quadratura = QLineEdit(self.groupBox_8)
         self.ordem_quadratura.setObjectName("ordem_quadratura")
-        self.ordem_quadratura.setGeometry(QRect(200, 60, 51, 20))
+        self.ordem_quadratura.setGeometry(QRect(270, 60, 51, 20))
         self.ordem_quadratura.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n"
-            'font: 8pt "Roboto";\n'
-            "color: black;"
+            'background-color: rgb(255, 255, 255);\nfont: 8pt "Roboto";\ncolor: black;'
         )
         self.groupBox_9 = QGroupBox(self.centralwidget)
         self.groupBox_9.setObjectName("groupBox_9")
@@ -248,7 +242,7 @@ class Ui_MainWindow(object):
         self.label_16.setObjectName("label_16")
         self.label_16.setGeometry(QRect(20, 30, 201, 16))
         self.label_16.setStyleSheet(
-            'font: 700 11pt "Roboto";\n' "color: rgb(255,255,255);\n" ""
+            'font: 700 11pt "Roboto";\ncolor: rgb(255,255,255);\n'
         )
         self.label_16.raise_()
         self.precisao_internas.raise_()
@@ -276,7 +270,7 @@ class Ui_MainWindow(object):
         self.label_20.setObjectName("label_20")
         self.label_20.setGeometry(QRect(10, 20, 71, 16))
         self.label_20.setStyleSheet(
-            'font: 700 12pt "Roboto";\n' "color: rgb(255,255,255)\n" ""
+            'font: 700 12pt "Roboto";\ncolor: rgb(255,255,255)\n'
         )
         self.gp1_dir_prescrita = QLineEdit(self.groupBox_19)
         self.gp1_dir_prescrita.setObjectName("gp1_dir_prescrita")
@@ -288,39 +282,37 @@ class Ui_MainWindow(object):
         font2.setItalic(False)
         self.gp1_dir_prescrita.setFont(font2)
         self.gp1_dir_prescrita.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n" "color: rgb(0, 0, 0);"
+            "background-color: rgb(255, 255, 255);\ncolor: rgb(0, 0, 0);"
         )
         self.gp1_dir_reflexiva = QRadioButton(self.groupBox_19)
         self.gp1_dir_reflexiva.setObjectName("gp1_dir_reflexiva")
         self.gp1_dir_reflexiva.setGeometry(QRect(20, 60, 101, 16))
         self.gp1_dir_reflexiva.setStyleSheet(
-            'font: 700 11pt "Roboto";\n' "color: rgb(255,255,255);\n" ""
+            'font: 700 11pt "Roboto";\ncolor: rgb(255,255,255);\n'
         )
         self.groupBox_18 = QGroupBox(self.groupBox_6)
         self.groupBox_18.setObjectName("groupBox_18")
         self.groupBox_18.setGeometry(QRect(20, 30, 141, 101))
         self.groupBox_18.setStyleSheet(
-            'font: 700 12pt "Roboto";\n' "color: rgb(255,255,255);"
+            'font: 700 12pt "Roboto";\ncolor: rgb(255,255,255);'
         )
         self.label_15 = QLabel(self.groupBox_18)
         self.label_15.setObjectName("label_15")
         self.label_15.setGeometry(QRect(10, 20, 71, 16))
         self.label_15.setStyleSheet(
-            'font: 700 12pt "Roboto";\n' "color: rgb(255,255,255);\n" ""
+            'font: 700 12pt "Roboto";\ncolor: rgb(255,255,255);\n'
         )
         self.gp1_esq_prescrita = QLineEdit(self.groupBox_18)
         self.gp1_esq_prescrita.setObjectName("gp1_esq_prescrita")
         self.gp1_esq_prescrita.setGeometry(QRect(90, 20, 41, 20))
         self.gp1_esq_prescrita.setFont(font2)
         self.gp1_esq_prescrita.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n" "color: rgb(0, 0, 0);"
+            "background-color: rgb(255, 255, 255);\ncolor: rgb(0, 0, 0);"
         )
         self.gp1_esq_reflexiva = QRadioButton(self.groupBox_18)
         self.gp1_esq_reflexiva.setObjectName("gp1_esq_reflexiva")
         self.gp1_esq_reflexiva.setGeometry(QRect(20, 60, 91, 16))
-        self.gp1_esq_reflexiva.setStyleSheet(
-            'font: 700 11pt "Roboto";\n' "color: white\n" ""
-        )
+        self.gp1_esq_reflexiva.setStyleSheet('font: 700 11pt "Roboto";\ncolor: white\n')
         self.groupBox_10 = QGroupBox(self.centralwidget)
         self.groupBox_10.setObjectName("groupBox_10")
         self.groupBox_10.setGeometry(QRect(400, 90, 281, 71))
@@ -344,32 +336,32 @@ class Ui_MainWindow(object):
         self.etapa.setFont(font2)
         self.etapa.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
         self.etapa.setStyleSheet(
-            "background-color: rgb(255, 255, 255);\n" 'font: 700 12pt "Roboto";'
+            'background-color: rgb(255, 255, 255);\nfont: 700 12pt "Roboto";'
         )
         self.etapa.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.logo_1 = QGraphicsView(self.centralwidget)
         self.logo_1.setObjectName("logo_1")
         self.logo_1.setGeometry(QRect(740, 180, 181, 81))
         self.logo_1.setStyleSheet(
-            "background-color: rgb(52, 73, 94);\n" "border-radius: 20px;"
+            "background-color: rgb(52, 73, 94);\nborder-radius: 20px;"
         )
         self.logo_2 = QGraphicsView(self.centralwidget)
         self.logo_2.setObjectName("logo_2")
         self.logo_2.setGeometry(QRect(720, 290, 221, 81))
         self.logo_2.setStyleSheet(
-            "background-color: rgb(52, 73, 94);\n" "border-radius: 20px;"
+            "background-color: rgb(52, 73, 94);\nborder-radius: 20px;"
         )
         self.logo_3 = QGraphicsView(self.centralwidget)
         self.logo_3.setObjectName("logo_3")
         self.logo_3.setGeometry(QRect(740, 400, 181, 81))
         self.logo_3.setStyleSheet(
-            "background-color: rgb(52, 73, 94);\n" "border-radius: 20px;"
+            "background-color: rgb(52, 73, 94);\nborder-radius: 20px;"
         )
         self.nome_simulador = QGraphicsView(self.centralwidget)
         self.nome_simulador.setObjectName("nome_simulador")
         self.nome_simulador.setGeometry(QRect(700, 40, 256, 91))
         self.nome_simulador.setStyleSheet(
-            "background-color: rgb(52, 73, 94);\n" "border-radius: 20px;"
+            "background-color: rgb(52, 73, 94);\nborder-radius: 20px;"
         )
         MainWindow.setCentralWidget(self.centralwidget)
         self.groupBox_10.raise_()
@@ -382,7 +374,7 @@ class Ui_MainWindow(object):
         self.nome_simulador.raise_()
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName("menubar")
-        self.menubar.setGeometry(QRect(0, 0, 969, 33))
+        self.menubar.setGeometry(QRect(0, 0, 969, 19))
         self.menubar.setMaximumSize(QSize(16777215, 16777215))
         self.menubar.setStyleSheet(
             "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(168, 168, 168, 255), stop:1 rgba(255, 255, 255, 255));\n"
@@ -418,10 +410,11 @@ class Ui_MainWindow(object):
         self.menuOpcoes.addAction(self.actionLimpar)
         self.menuOpcoes.addAction(self.actionSair)
         self.menuCalcular.addAction(self.menuM_tdos_1_Grupo.menuAction())
-        self.menuM_tdos_1_Grupo.addAction(self.actionDiamond_Difference_DD)
-        self.menuM_tdos_1_Grupo.addAction(self.actionMED)
-        self.menuM_tdos_1_Grupo.addAction(self.actionMED_Modificado)
-        self.menuM_tdos_1_Grupo.addAction(self.actionResponse_Matrix)
+        self.menuM_tdos_1_Grupo.addAction(self.actionDD)
+        self.menuM_tdos_1_Grupo.addAction(self.actionSDM)
+        self.menuM_tdos_1_Grupo.addAction(self.actionMSD)
+        self.menuM_tdos_1_Grupo.addAction(self.actionSGF)
+        self.menuM_tdos_1_Grupo.addAction(self.actionRM)
         self.menuResultados.addAction(self.actionNumericos_1G)
         self.menuPropriedades.addAction(self.actionFisicos_Materiais_1G)
         self.menuRelatorio_de_Simulacao.addAction(self.actionRelatorio)
@@ -436,14 +429,14 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(
-            QCoreApplication.translate("MainWindow", "GENESIS", None)
+            QCoreApplication.translate("GENESIS", "GENESIS", None)
         )
         self.actionSair.setText(QCoreApplication.translate("MainWindow", "Sair", None))
         self.actionM_todos_2_Grupo.setText(
             QCoreApplication.translate("MainWindow", "M\u00e9todos 2 Grupo", None)
         )
-        self.actionDiamond_Difference_DD.setText(
-            QCoreApplication.translate("MainWindow", "Diamond Difference (DD)", None)
+        self.actionDD.setText(
+            QCoreApplication.translate("MainWindow", "DD - Diamond Difference", None)
         )
         self.actionDegrau_Caracter_stico.setText(
             QCoreApplication.translate("MainWindow", "Degrau Caracter\u00edstico", None)
@@ -471,12 +464,15 @@ class Ui_MainWindow(object):
         self.actionAjuda.setText(
             QCoreApplication.translate("MainWindow", "Ajuda", None)
         )
-        self.actionMED.setText(QCoreApplication.translate("MainWindow", "SDM", None))
-        self.actionMED_Modificado.setText(
-            QCoreApplication.translate("MainWindow", "MSD", None)
+        self.actionSDM.setText(
+            QCoreApplication.translate(
+                "MainWindow", "SDM - Spectral Deterministic Method", None
+            )
         )
-        self.actionResponse_Matrix.setText(
-            QCoreApplication.translate("MainWindow", "Response Matrix", None)
+        self.actionMSD.setText(
+            QCoreApplication.translate(
+                "MainWindow", "MSD - Modified Spectral Deterministic", None
+            )
         )
         self.actionRelatorio.setText(
             QCoreApplication.translate("MainWindow", "Mostrar", None)
@@ -490,24 +486,30 @@ class Ui_MainWindow(object):
         self.actionLimpar.setText(
             QCoreApplication.translate("MainWindow", "Limpar Hist\u00f3rico", None)
         )
+        self.actionSGF.setText(
+            QCoreApplication.translate(
+                "MainWindow", "SGF - Spectral Green's Function", None
+            )
+        )
+        self.actionRM.setText(
+            QCoreApplication.translate("MainWindow", "RM - Response Matrix", None)
+        )
         self.groupBox_7.setTitle(
             QCoreApplication.translate(
                 "MainWindow", "Dom\u00ednio e Ordem de Quadratura", None
             )
         )
-        ___qtablewidgetitem = self.nodos_esp_zona.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", "1", None))
-        ___qtablewidgetitem1 = self.nodos_esp_zona.verticalHeaderItem(0)
-        ___qtablewidgetitem1.setText(
+        ___qtablewidgetitem = self.nodos_esp_zona.verticalHeaderItem(0)
+        ___qtablewidgetitem.setText(
             QCoreApplication.translate("MainWindow", "Nodos", None)
         )
-        ___qtablewidgetitem2 = self.nodos_esp_zona.verticalHeaderItem(1)
-        ___qtablewidgetitem2.setText(
-            QCoreApplication.translate("MainWindow", "Espessura(cm)", None)
+        ___qtablewidgetitem1 = self.nodos_esp_zona.verticalHeaderItem(1)
+        ___qtablewidgetitem1.setText(
+            QCoreApplication.translate("MainWindow", "Espessura (cm)", None)
         )
-        ___qtablewidgetitem3 = self.nodos_esp_zona.verticalHeaderItem(2)
-        ___qtablewidgetitem3.setText(
-            QCoreApplication.translate("MainWindow", "Zona", None)
+        ___qtablewidgetitem2 = self.nodos_esp_zona.verticalHeaderItem(2)
+        ___qtablewidgetitem2.setText(
+            QCoreApplication.translate("MainWindow", "Zona Material", None)
         )
         self.label_22.setText(QCoreApplication.translate("MainWindow", "(cm)", None))
         self.groupBox_8.setTitle("")
@@ -536,8 +538,8 @@ class Ui_MainWindow(object):
                 'li.unchecked::marker { content: "\\2610"; }\n'
                 'li.checked::marker { content: "\\2612"; }\n'
                 "</style></head><body style=\" font-family:'Roboto'; font-size:9pt; font-weight:700; font-style:normal;\">\n"
-                '<p align="center" style=" margin-top:2px; margin-bottom:2px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'Roboto\'; font-weight:700;">Ordem da </span></p>\n'
-                '<p align="center" style=" margin-top:2px; margin-bottom:2px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'Roboto\'; font-weight:700;">Quadratura</span></p></body></html>',
+                '<p align="center" style=" margin-top:2px; margin-bottom:2px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'Roboto\'; font-weight:700;">Ordem da Quadratura</span></p>\n'
+                '<p align="center" style=" margin-top:2px; margin-bottom:2px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-family:\'Roboto\'; font-weight:700;">de Gauss-Legendre</span></p></body></html>',
                 None,
             )
         )

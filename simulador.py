@@ -12,19 +12,19 @@
 #   1- MED MODIFICADO; CORRETO
 #   2- SPECTRAL GREEN'S FUNCTION (SGF).
 
-import platform
-import sys
 import json
 import os
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap, QPalette, QColor, QFont, QFontDatabase
+import platform
+import sys
 
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QColor, QFont, QFontDatabase, QPalette, QPixmap
 from PySide6.QtWidgets import (
-    QMainWindow,
-    QDialog,
     QApplication,
+    QDialog,
     QGraphicsPixmapItem,
     QGraphicsScene,
+    QMainWindow,
     QMessageBox,
     QTableWidgetItem,
 )
@@ -32,6 +32,9 @@ from PySide6.QtWidgets import (
 from dashboards.dashboard_simulador import (
     Ui_MainWindow,  # Importando a dashboard do simulador
 )
+
+# Importando janela de ajuda
+from dashboards.janela_ajuda import Janela_Instrucoes
 from dashboards.janela_propriedades import (
     propriedades,
 )  # Importando tela de propriedades
@@ -39,26 +42,22 @@ from dashboards.janela_resultados_1G import (
     Ui_resultados_1G,  # Importando a tela de resultados 1G
 )
 
-# Importando janela de ajuda
-from dashboards.janela_ajuda import Janela_Instrucoes
-
 # Importando janela de taxas
 from dashboards.janela_taxas import Ui_taxas_resultado
-
+from mensagens.erros import *
+from metodos.common.graphics import (
+    combo_chart,
+    heat_graphic,
+    main_graphic,
+    reg_graphic,
+)  # Geradores das imagens
+from metodos.common.init_variables import init_hj
 from metodos.dd_main import (
     diamond_difference,  # Importando o Diamond Difference
 )
-from metodos.sdm_main import sdm
 from metodos.msd_main import msd
 from metodos.rm_main import response_matrix
-from metodos.common.graphics import (
-    main_graphic,
-    heat_graphic,
-    reg_graphic,
-    combo_chart,
-)  # Geradores das imagens
-from metodos.common.init_variables import init_hj
-from mensagens.erros import *
+from metodos.sdm_main import sdm
 
 # Criação de variáveis que serão mostradas
 fi_final, dominio, psiX, taxa_absorcao, taxa_fuga, regioes, NN = ([] for _ in range(7))
@@ -191,16 +190,16 @@ class dashboard_simulador(QMainWindow):
         # -----------------------------------------------------------
         self.ui.ok_regioes.clicked.connect(self.regioes)  # Edita número de regiões
         self.ui.actionRelatorio.triggered.connect(self.mostrar_relatorio)
-        self.ui.actionDiamond_Difference_DD.triggered.connect(
+        self.ui.actionDD.triggered.connect(
             lambda: self.iniciar_calculo(method="Diamond Difference")
         )  # Inicia o processo de cálculo do DD
-        self.ui.actionMED.triggered.connect(
+        self.ui.actionSDM.triggered.connect(
             lambda: self.iniciar_calculo(method="SDM")
         )  # Inicia o processo de cálculo do SDM
-        self.ui.actionMED_Modificado.triggered.connect(
+        self.ui.actionMSD.triggered.connect(
             lambda: self.iniciar_calculo(method="MSD")
         )  # Inicia o processo de cálculo do MSD
-        self.ui.actionResponse_Matrix.triggered.connect(
+        self.ui.actionRM.triggered.connect(
             lambda: self.iniciar_calculo(method="RM")
         )  # Inicia o processo de cálculo do Response Matrix
         self.ui.actionFisicos_Materiais_1G.triggered.connect(
@@ -354,14 +353,37 @@ class dashboard_simulador(QMainWindow):
                 f"{taxa_absorcao}\n\n"
                 "Taxa de Fuga:\n"
                 f"{taxa_fuga}"
-                f"\n\n\n{50*'-'}\n\n\n"
+                f"\n\n\n{50 * '-'}\n\n\n"
             )
         self.abrir_resultados_1G()
         ordem_metodo += 1
 
     def iniciar_metodo(self, metodo_func):
         # As variáveis precisam ser globais para que sejam utilizadas em outras funções
-        global psiX, fi_final, dominio, taxa_absorcao, taxa_fuga, n_regioes, regioes, NN, primeiro_calculo, method, duracao, iteracao, N, sigmaT, sigmaS0, Qj, cce, ccd, precisao, esp_R, duracao, metodo, iteracao
+        global \
+            psiX, \
+            fi_final, \
+            dominio, \
+            taxa_absorcao, \
+            taxa_fuga, \
+            n_regioes, \
+            regioes, \
+            NN, \
+            primeiro_calculo, \
+            method, \
+            duracao, \
+            iteracao, \
+            N, \
+            sigmaT, \
+            sigmaS0, \
+            Qj, \
+            cce, \
+            ccd, \
+            precisao, \
+            esp_R, \
+            duracao, \
+            metodo, \
+            iteracao
         metodo = metodo_func
         try:
             (
@@ -523,7 +545,7 @@ class dashboard_simulador(QMainWindow):
         cce = float(self.ui.gp1_esq_prescrita.text())
         ccd = float(self.ui.gp1_dir_prescrita.text())
         n_casas_decimais = int(self.ui.precisao_internas.text())
-        precisao = float(f"1e-{n_casas_decimais+2}")
+        precisao = float(f"1e-{n_casas_decimais + 2}")
 
         tabela = self.ui.nodos_esp_zona  # Acessa a tabela de dados
 

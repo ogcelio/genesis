@@ -31,8 +31,8 @@ termos = (
     "\u03a3S0 [cm\u207b\u00b9]",
     "\u03a3S1 [cm\u207b\u00b9]",
     "\u03a3S2 [cm\u207b\u00b9]",
-    "Fonte [#/(cm\u00b3\u00b7s)]",
-    "\U0001d708\u00b7\u03a3F",
+    "Fonte [#/(cm\u00b3s)]",
+    "\U0001d708 \u03a3F",
 )
 
 

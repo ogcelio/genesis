@@ -1,11 +1,12 @@
-import os  # biblioteca de sistema operacional
 import json
+import os  # biblioteca de sistema operacional
 import platform
 
 import matplotlib.pyplot as plt  # biblioteca para plotagem
 import numpy as np  # biblioteca para operações matemáticas
 from matplotlib.colors import Normalize, to_hex  # coleta de cores e normalização
 from PIL import Image, ImageDraw
+
 from metodos.common.init_variables import init_hj
 
 
@@ -67,7 +68,7 @@ def main_graphic(NN, esp_R, final_fi, regs, n_regs, method, open):
 
     # Definindo legendas para os eixos
     plt.xlabel("Domínio (cm)", fontsize=10)
-    plt.ylabel("Fluxo escalar médio (Nêutrons/cm$^2$s)", fontsize=10)
+    plt.ylabel("Fluxo Escalar (#/cm$^2$s)", fontsize=10)
 
     # Criando legenda e definindo a sua localização (melhor possível)
     plt.legend(loc="best")
