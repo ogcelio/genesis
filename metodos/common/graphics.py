@@ -46,24 +46,25 @@ def main_graphic(NN, esp_R, final_fi, regs, n_regs, method, open):
 
     color = ""
     if method == "Diamond Difference":
-        color = "lime"
-    elif method == "SDM":
         color = "cyan"
+    elif method == "SDM":
+        color = "red"
     elif method == "MSD":
         color = "orchid"
     elif method == "RM":
         color = "orange"
-    # Plotando o gráfico de linhas
-    plt.plot(dominio, final_fi, color=color, zorder=2, label=method)
+    elif method == "SGF":
+        color = "lime"
+
     # Plotando pontos dos fluxos escalares
     plt.scatter(
         dominio,
         final_fi,
-        s=100,
-        color="darkslategray",
-        edgecolor="black",
+        s=80,
+        color=color,
+        label=method,
         linewidth=1,
-        zorder=1,
+        zorder=3,
     )
 
     # Definindo legendas para os eixos
@@ -73,7 +74,7 @@ def main_graphic(NN, esp_R, final_fi, regs, n_regs, method, open):
     # Criando legenda e definindo a sua localização (melhor possível)
     plt.legend(loc="best")
 
-    if open == True:
+    if open:
         plt.show()
         return
 
@@ -105,7 +106,7 @@ def combo_chart(junto: bool):
     with open(cache_path, "r", encoding="utf8") as file:
         resultados = json.load(file)
 
-    if junto == True:
+    if junto:
         fig, ax = plt.subplots(figsize=(9, 8))
     else:
         linhas = 2
@@ -125,26 +126,33 @@ def combo_chart(junto: bool):
                 max_dominio = max(dominio)
                 dominio.append(max_dominio + hj[j])
 
-        if junto != True:
+        if not junto:
             color = ""
             if metodo == "Diamond Difference":
-                color = "lime"
-            elif metodo == "SDM":
                 color = "cyan"
+            elif metodo == "SDM":
+                color = "red"
             elif metodo == "MSD":
                 color = "orchid"
             elif metodo == "RM":
                 color = "orange"
+            elif metodo == "SGF":
+                color = "lime"
 
             ax = fig.add_subplot(linhas, colunas, i + 1)
-            ax.plot(dominio, final_fi, color="darkslategray", label=metodo, zorder=2)
-            ax.scatter(dominio, final_fi, color=color, zorder=3)
+            ax.scatter(
+                dominio,
+                final_fi,
+                color=color,
+                label=metodo,
+                zorder=3,
+            )
         else:
             ax.scatter(dominio, final_fi, label=metodo, zorder=3)
 
         plt.grid(True)
         plt.legend(loc="best")
-        plt.ylabel("Fluxo escalar médio (Nêutrons/cm$^2$s)", fontsize=10)
+        plt.ylabel("Fluxo Escalar (#/cm$^2$s)", fontsize=10)
         plt.xlabel("Domínio (cm)", fontsize=10)
 
     plt.tight_layout()

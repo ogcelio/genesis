@@ -58,6 +58,7 @@ from metodos.dd_main import (
 from metodos.msd_main import msd
 from metodos.rm_main import response_matrix
 from metodos.sdm_main import sdm
+from metodos.sgf_main import sgf
 
 # Criação de variáveis que serão mostradas
 fi_final, dominio, psiX, taxa_absorcao, taxa_fuga, regioes, NN = ([] for _ in range(7))
@@ -202,6 +203,9 @@ class dashboard_simulador(QMainWindow):
         self.ui.actionRM.triggered.connect(
             lambda: self.iniciar_calculo(method="RM")
         )  # Inicia o processo de cálculo do Response Matrix
+        self.ui.actionSGF.triggered.connect(
+            lambda: self.iniciar_calculo(method="SGF")
+        )  # Inicia o processo de cálculo do SGF
         self.ui.actionFisicos_Materiais_1G.triggered.connect(
             self.abrir_propriedades_1G
         )  # Abre as propriedades 1G
@@ -533,6 +537,23 @@ class dashboard_simulador(QMainWindow):
                     n_regioes,
                     esp_R,
                 )
+            )
+        elif metodo_func == "SGF":
+            fi_final, psiX, iteracao, taxa_absorcao, taxa_fuga, duracao = sgf(
+                sigmaT,
+                sigmaS0,
+                sigmaS1,
+                sigmaS2,
+                Qj,
+                NiSigmaF,
+                N,
+                cce,
+                ccd,
+                precisao,
+                NN,
+                regioes,
+                n_regioes,
+                esp_R,
             )
         # ---------------------------------------------
         method = metodo_func
