@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'dashboard_simuladorlaFrtL.ui'
+## Form generated from reading UI file 'dashboard_simuladorCWoWZQ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.2
 ##
@@ -43,6 +43,7 @@ from PySide6.QtGui import (
 )
 from PySide6.QtWidgets import (
     QApplication,
+    QComboBox,
     QGraphicsView,
     QGroupBox,
     QHeaderView,
@@ -228,24 +229,43 @@ class Ui_MainWindow(object):
             "}\n"
             ""
         )
-        self.precisao_internas = QLineEdit(self.groupBox_9)
-        self.precisao_internas.setObjectName("precisao_internas")
-        self.precisao_internas.setGeometry(QRect(220, 30, 51, 21))
-        self.precisao_internas.setStyleSheet(
+        self.precisao_int = QLineEdit(self.groupBox_9)
+        self.precisao_int.setObjectName("precisao_int")
+        self.precisao_int.setGeometry(QRect(30, 30, 91, 31))
+        self.precisao_int.setStyleSheet(
             "background-color: rgb(255, 255, 255);\n"
-            'font: 8pt "Roboto";\n'
+            'font: 12pt "Roboto";\n'
             "color: rgb(0,0,0);\n"
             ""
         )
-        self.precisao_internas.setDragEnabled(False)
-        self.label_16 = QLabel(self.groupBox_9)
-        self.label_16.setObjectName("label_16")
-        self.label_16.setGeometry(QRect(20, 30, 201, 16))
-        self.label_16.setStyleSheet(
-            'font: 700 11pt "Roboto";\ncolor: rgb(255,255,255);\n'
+        self.precisao_int.setDragEnabled(False)
+        self.precisao_float = QComboBox(self.groupBox_9)
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.addItem("")
+        self.precisao_float.setObjectName("precisao_float")
+        self.precisao_float.setGeometry(QRect(160, 30, 101, 31))
+        self.precisao_float.setStyleSheet(
+            "background-color: rgb(255, 255, 255);\n"
+            "selection-background-color: rgba(191, 64, 64, 0);\n"
+            "selection-color: rgb(29, 52, 183);\n"
+            'font: 12pt "Roboto";'
         )
-        self.label_16.raise_()
-        self.precisao_internas.raise_()
+        self.label = QLabel(self.groupBox_9)
+        self.label.setObjectName("label")
+        self.label.setGeometry(QRect(130, 40, 21, 19))
+        self.label.setStyleSheet("color: rgb(255, 255, 255);")
         self.groupBox_6 = QGroupBox(self.centralwidget)
         self.groupBox_6.setObjectName("groupBox_6")
         self.groupBox_6.setGeometry(QRect(20, 10, 341, 151))
@@ -549,9 +569,56 @@ class Ui_MainWindow(object):
         self.groupBox_9.setTitle(
             QCoreApplication.translate("MainWindow", "Precis\u00e3o", None)
         )
-        self.label_16.setText(
+        self.precisao_int.setText(QCoreApplication.translate("MainWindow", "1", None))
+        self.precisao_float.setItemText(
+            0, QCoreApplication.translate("MainWindow", "1E-1 (0.1)", None)
+        )
+        self.precisao_float.setItemText(
+            1, QCoreApplication.translate("MainWindow", "1E-2 (0.01)", None)
+        )
+        self.precisao_float.setItemText(
+            2, QCoreApplication.translate("MainWindow", "1E-3 (0.001)", None)
+        )
+        self.precisao_float.setItemText(
+            3, QCoreApplication.translate("MainWindow", "1E-4 (0.0001)", None)
+        )
+        self.precisao_float.setItemText(
+            4, QCoreApplication.translate("MainWindow", "1E-5 (0.00001)", None)
+        )
+        self.precisao_float.setItemText(
+            5, QCoreApplication.translate("MainWindow", "1E-6 (0.000001)", None)
+        )
+        self.precisao_float.setItemText(
+            6, QCoreApplication.translate("MainWindow", "1E-7 (0.0000001)", None)
+        )
+        self.precisao_float.setItemText(
+            7, QCoreApplication.translate("MainWindow", "1E-8 (0.00000001)", None)
+        )
+        self.precisao_float.setItemText(
+            8, QCoreApplication.translate("MainWindow", "1E-9 (0.000000001)", None)
+        )
+        self.precisao_float.setItemText(
+            9, QCoreApplication.translate("MainWindow", "1E-10 (0.000000001)", None)
+        )
+        self.precisao_float.setItemText(
+            10, QCoreApplication.translate("MainWindow", "1E-11 (0.0000000001)", None)
+        )
+        self.precisao_float.setItemText(
+            11, QCoreApplication.translate("MainWindow", "1E-12 (0.00000000001)", None)
+        )
+        self.precisao_float.setItemText(
+            12, QCoreApplication.translate("MainWindow", "1E-13 (0.000000000001)", None)
+        )
+        self.precisao_float.setItemText(
+            13,
+            QCoreApplication.translate("MainWindow", "1E-14 (0.0000000000001)", None),
+        )
+
+        self.label.setText(
             QCoreApplication.translate(
-                "MainWindow", "N\u00famero de casas decimais:", None
+                "MainWindow",
+                '<html><head/><body><p align="center"><span style=" font-size:12pt;">X</span></p></body></html>',
+                None,
             )
         )
         self.groupBox_6.setTitle(

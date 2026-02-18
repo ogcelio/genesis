@@ -262,7 +262,7 @@ class dashboard_simulador(QMainWindow):
         if platform.system() == "Windows":
             os.system(relatorio_path)
         else:
-            os.system(f"open {relatorio_path}")
+            os.system(f"xdg-open {relatorio_path}")
 
     def iniciar_calculo(self, method):
         global esp_R, duracao, iteracao, fi_final, psiX, taxa_absorcao, taxa_fuga, N, sigmaT, sigmaS0, Qj, cce, ccd, precisao, n_regioes, regioes, NN, ordem_metodo, reator
@@ -565,8 +565,10 @@ class dashboard_simulador(QMainWindow):
         N = int(self.ui.ordem_quadratura.text())  # int
         cce = float(self.ui.gp1_esq_prescrita.text())
         ccd = float(self.ui.gp1_dir_prescrita.text())
-        n_casas_decimais = int(self.ui.precisao_internas.text())
-        precisao = float(f"1e-{n_casas_decimais + 2}")
+        precisao_int = int(self.ui.precisao_int.text())
+        precisao_float = int(self.ui.precisao_float.currentIndex())
+        n_casas_decimais = precisao_float + 1
+        precisao = precisao_int * float(f"1E-{n_casas_decimais}")
 
         tabela = self.ui.nodos_esp_zona  # Acessa a tabela de dados
 
