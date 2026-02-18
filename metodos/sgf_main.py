@@ -46,7 +46,7 @@ def sgf(
     psiM = zeros((TOTAL_NODES, N))
     iteration = 0
 
-    if trivial_sol(Q, CCE, CCD):
+    if trivial_sol(Q, REGS, CCE, CCD):
         initial_fi = zeros(TOTAL_NODES + 1)
 
         abs_rate = zeros(NUM_REGS)

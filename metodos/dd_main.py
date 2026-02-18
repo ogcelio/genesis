@@ -44,7 +44,7 @@ def diamond_difference(
 
     iteration = 0
 
-    if trivial_sol(Q, CCE, CCD):
+    if trivial_sol(Q, REGS, CCE, CCD):
         # Arredondando fi_final
         initial_fi = np.zeros(NNT + 1)
 
