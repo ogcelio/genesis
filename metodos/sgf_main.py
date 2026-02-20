@@ -13,6 +13,7 @@ from metodos.quadratura.quadratura_backend import quadratura
 from metodos.SDM.calc_eigen import calc_eigen
 from metodos.SDM.calc_part_sol import calc_part_sol
 from metodos.SGF.calc_psi import backward, foward
+from metodos.SGF.calc_psiM import calc_psiM
 from metodos.SGF.calc_source import calc_source
 from metodos.SGF.calc_sweep_matrices import calc_sweep_matrices
 from metodos.SGF.calc_theta import calc_theta
@@ -122,6 +123,9 @@ def sgf(
         dr = calc_dr(initial_fi, final_fi)
         if dr < PREC:
             break
+
+    # CALCULANDO FLUXO MEDIO
+    calc_psiM(N, REGS, NUM_NODES, THETA_DICT, SOURCE_DICT, psi, psiM)
 
     # TAXA DE ABSORÇÃO
 
