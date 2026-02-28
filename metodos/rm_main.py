@@ -10,11 +10,11 @@ from metodos.common.calc_sigmaA import calc_sigmaA
 from metodos.common.init_variables import init_C0j, init_hj, init_psiX
 from metodos.common.trivial_sol_test import trivial_sol
 from metodos.quadratura.quadratura_backend import quadratura
-from metodos.response_matrix.calc_aux_em import calc_aux_em
-from metodos.response_matrix.calc_inv_aux_in import calc_inv_aux_in
-from metodos.response_matrix.calc_psi import calc_psi
-from metodos.response_matrix.calc_psiM import calc_psiM
-from metodos.response_matrix.calc_solution_dif import calc_sol_dif
+from metodos.Response_Matrix.calc_aux_em import calc_aux_em
+from metodos.Response_Matrix.calc_inv_aux_in import calc_inv_aux_in
+from metodos.Response_Matrix.calc_psi import calc_psi
+from metodos.Response_Matrix.calc_psiM import calc_psiM
+from metodos.Response_Matrix.calc_solution_dif import calc_sol_dif
 from metodos.SDM.calc_eigen import calc_eigen
 from metodos.SDM.calc_part_sol import calc_part_sol
 

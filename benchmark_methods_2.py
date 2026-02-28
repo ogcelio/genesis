@@ -1,3 +1,4 @@
+# IMPORTANDO BIBLIOTECAS NECESSARIAS
 import json
 from time import perf_counter
 
@@ -9,15 +10,16 @@ from metodos.rm_main import response_matrix
 from metodos.sdm_main import sdm
 from metodos.sgf_main import sgf
 
+# DEFININDO PARAMETROS DO PROBLEMA
 N = 4
 cce = 1
 ccd = 0
 prec = 1e-8
-NN = [1000, 1000, 1000, 1000]
 regs = [1, 2, 3, 4]
 n_regs = 4
 esp_R = [5, 5, 5, 5]
 
+# IMPORTANDO DADOS DAS ZONAS MATERIAIS
 with open("benchmark_data.json", "r", encoding="utf8") as file:
     propriedades_1grupo = json.load(file)
 
@@ -36,8 +38,19 @@ for i in range(len(sigmaT)):
     Qj[i] = float(Qj[i])
     NiSigmaF[i] = float(NiSigmaF[i])
 
+
+# FUNCAO PARA PRINTAR RESULTADOS
+def print_result(n_regs, esp_r, final_fi):
+    for i in range(n_regs + 1):
+        print(f"X = {sum(esp_r[:i])}: {final_fi[sum(NN[:i])]}")
+
+
 print(50 * "-")
 
+# NUMERO DE NODOS PARA O DD
+NN = [100, 100, 100, 100]
+
+# EXECUTANDO O DD
 final_fi, psi, iteration, abs_rate, escape_rate, execution_time = diamond_difference(
     sigmaT,
     sigmaS0,
@@ -54,23 +67,17 @@ final_fi, psi, iteration, abs_rate, escape_rate, execution_time = diamond_differ
     n_regs,
     esp_R,
 )
-print("DD:")
 
-indices = [0, 1000, 2000, 3000, 4000]
-for i in indices:
-    print(f"{i}: {final_fi[i]}")
+# PRINTANDO RESULTADOS
+print("DD:")
+print_result(n_regs, esp_R, final_fi)
 
 print(50 * "-")
 
-N = 4
-cce = 1
-ccd = 0
-prec = 1e-8
+# NUMERO DE NODOS PARA O SGF
 NN = [10, 10, 10, 10]
-regs = [1, 2, 3, 4]
-n_regs = 4
-esp_R = [5, 5, 5, 5]
 
+# EXECUTANDO O SGF
 final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
     sigmaT,
     sigmaS0,
@@ -87,10 +94,9 @@ final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
     n_regs,
     esp_R,
 )
-print("SGF:")
-indices = [0, 10, 20, 30, 40]
 
-for i in indices:
-    print(f"{i}: {final_fi[i]}")
+# PRINTANDO RESULTADOS
+print("SGF:")
+print_result(n_regs, esp_R, final_fi)
 
 print(50 * "-")
