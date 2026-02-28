@@ -13,7 +13,7 @@ N = 4
 cce = 1
 ccd = 0
 prec = 1e-8
-NN = [1, 1, 1, 1]
+NN = [1000, 1000, 1000, 1000]
 regs = [1, 2, 3, 4]
 n_regs = 4
 esp_R = [5, 5, 5, 5]
@@ -36,7 +36,9 @@ for i in range(len(sigmaT)):
     Qj[i] = float(Qj[i])
     NiSigmaF[i] = float(NiSigmaF[i])
 
-final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
+print(50 * "-")
+
+final_fi, psi, iteration, abs_rate, escape_rate, execution_time = diamond_difference(
     sigmaT,
     sigmaS0,
     sigmaS1,
@@ -52,13 +54,22 @@ final_fi, psi, iteration, abs_rate, escape_rate, execution_time = msd(
     n_regs,
     esp_R,
 )
-print("MSD:")
-indices = [0, 1, 2, 3, 4]
+print("DD:")
 
+indices = [0, 1000, 2000, 3000, 4000]
 for i in indices:
-    print(f"posisao {i}: {final_fi[i]}")
+    print(f"{i}: {final_fi[i]}")
 
 print(50 * "-")
+
+N = 4
+cce = 1
+ccd = 0
+prec = 1e-8
+NN = [10, 10, 10, 10]
+regs = [1, 2, 3, 4]
+n_regs = 4
+esp_R = [5, 5, 5, 5]
 
 final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
     sigmaT,
@@ -76,5 +87,10 @@ final_fi, psi, iteration, abs_rate, escape_rate, execution_time = sgf(
     n_regs,
     esp_R,
 )
-print("sgf:")
-print(final_fi)
+print("SGF:")
+indices = [0, 10, 20, 30, 40]
+
+for i in indices:
+    print(f"{i}: {final_fi[i]}")
+
+print(50 * "-")
