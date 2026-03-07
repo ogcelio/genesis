@@ -273,9 +273,7 @@ class dashboard_simulador(QMainWindow):
         QApplication.processEvents()  # Atualiza a tela
 
         sem_erros = self.iniciar_metodo(metodo_func=method)
-        if (
-            sem_erros != True
-        ):  # Se sem_erros for diferente de True, o método não finaliza
+        if not sem_erros:  # Se sem_erros for diferente de True, o método não finaliza
             return
 
         self.ui.etapa.setText("GERANDO GRÁFICOS")
@@ -463,7 +461,7 @@ class dashboard_simulador(QMainWindow):
             QMessageBox.information(
                 QMessageBox(),
                 "ERRO AI-003: AÇÃO INVÁLIDA",
-                f"Certifique-se de que você escolheu um conjunto de propriedades na tela de propriedades antes de rodar o método.",
+                "Certifique-se de que você escolheu um conjunto de propriedades na tela de propriedades antes de rodar o método.",
             )
             return False
         if metodo_func == "Diamond Difference":
@@ -733,7 +731,7 @@ class Resultados_Numericos_1G(QDialog):
 
         # Coleta o domínio e o caminho de salvamento do gráfico do MED
         save_path_grafico, dominio = main_graphic(
-            NN, esp_R, fi_final, regioes, n_regioes, metodo, False
+            NN, esp_R, fi_final, n_regioes, metodo, False
         )
 
         # Importando a figura e tornando-a em um item gráfico
@@ -830,7 +828,7 @@ class Resultados_Numericos_1G(QDialog):
     def abrir_grafico(self):
         global primeiro_calculo
         if primeiro_calculo == True:
-            main_graphic(NN, esp_R, fi_final, regioes, n_regioes, method, True)
+            main_graphic(NN, esp_R, fi_final, n_regioes, method, True)
         else:
             self.ui.etapa.setText("ERRO AI-001")
             QApplication.processEvents()  # Atualiza a tela

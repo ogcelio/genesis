@@ -11,26 +11,19 @@ from metodos.common.init_variables import init_hj
 
 
 # Gerando o gráfico principal
-def main_graphic(NN, esp_R, final_fi, regs, n_regs, method, open):
+def main_graphic(NN, esp_R, final_fi, n_regs, method, open):
     # Gerando lista com todos* os pontos do domínio
-    NNT = sum(NN)
     dominio = []
     hj = init_hj(NN, n_regs, esp_R)
 
-    contador = 0
-    espessura_atual = 0
-    espessura_regiao = 0
-    dominio.append(0.0)
-    for i in range(NNT):
-        if espessura_regiao == esp_R[contador]:
-            espessura_regiao = 0
-            contador += 1
-
-        espessura_atual += hj[contador]
-        espessura_regiao += hj[contador]
-        dominio.append(espessura_atual)
+    c: int = 0
+    for index_reg in range(n_regs):
+        for node in range(NN[index_reg]):
+            dominio.append(c + node * hj[index_reg])
+        c += esp_R[index_reg]
 
     esp_T = sum(esp_R)  # Espessura total
+    dominio.append(esp_T)
 
     plt.figure(figsize=(6.8, 5.35))  # NÃO MUDE; Definindo tamanho da figura
     # fig.subplots_adjust(left=0.2, right=0.85, top=0.85, bottom=0.2)  # NÃO APAGUE
