@@ -29,8 +29,8 @@ def calc_theta(
         reg_num = reg - 1
 
         # COLETANDO AUTOVALORES E AUTOVETORES
-        eigenvalues = EIGEN_DICT[f"{index_reg}"]["eigenvalues"]
-        eigenvectors = EIGEN_DICT[f"{index_reg}"]["eigenvectors"]
+        eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
+        eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
 
         # CONSTANTES
         SIGMA_TH = SIGMA_T[reg_num] * H[index_reg]

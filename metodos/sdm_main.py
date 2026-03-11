@@ -83,8 +83,8 @@ def sdm(
             reg = REGS[index_reg] - 1
 
             # COLETANDO AUTOVALORES E AUTOVETORES
-            eigenvalues = EIGEN_DICT[f"{reg}"]["eigenvalues"]
-            eigenvectors = EIGEN_DICT[f"{reg}"]["eigenvectors"]
+            eigenvalues = EIGEN_DICT[f"{reg + 1}"]["eigenvalues"]
+            eigenvectors = EIGEN_DICT[f"{reg + 1}"]["eigenvectors"]
 
             # COLETANDO SOLUÇÃO PARTICULAR
             part_sol = PART_SOL_DICT[f"{reg}"]

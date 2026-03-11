@@ -1,5 +1,5 @@
+from numpy import ndarray, zeros
 from numpy.linalg import eig
-from numpy import zeros, ndarray
 
 
 def calc_eigen(N: int, REGS: list, MI: ndarray, W: ndarray, C0: ndarray) -> dict:
@@ -26,6 +26,6 @@ def calc_eigen(N: int, REGS: list, MI: ndarray, W: ndarray, C0: ndarray) -> dict
             eigenvalues[i] = 1 / eigenvalue
 
         eigen.update(
-            {f"{reg_index}": {"eigenvalues": eigenvalues, "eigenvectors": eigenvectors}}
+            {f"{reg}": {"eigenvalues": eigenvalues, "eigenvectors": eigenvectors}}
         )
     return eigen
